@@ -15,9 +15,26 @@ export const Shell: React.FC = () => {
   });
 
   return (
-    <div className="flex h-screen bg-cr-bg text-cr-text overflow-hidden">
+    <div className="flex h-screen bg-black text-cr-text overflow-hidden relative">
+      {/* Full-viewport cover video behind DApp interface */}
+      <div className="fixed inset-0 overflow-hidden bg-black z-0 pointer-events-none">
+        <video
+          className="absolute inset-0 w-full h-full object-cover pointer-events-none opacity-30"
+          autoPlay
+          muted
+          loop
+          playsInline
+        >
+          <source
+            src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260809_012548_ef22562c-c0ae-4816-ad9d-f8922af4e6a7.mp4"
+            type="video/mp4"
+          />
+        </video>
+        <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/50 to-black/90 pointer-events-none" />
+      </div>
+
       {/* Desktop Sidebar */}
-      <div className="hidden lg:block shrink-0">
+      <div className="hidden lg:block shrink-0 relative z-20">
         <Sidebar />
       </div>
 
@@ -35,7 +52,7 @@ export const Shell: React.FC = () => {
       )}
 
       {/* Main Content Area */}
-      <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
+      <div className="flex-1 flex flex-col min-w-0 overflow-hidden relative z-10">
         <Header
           onToggleMobileMenu={() => setMobileMenuOpen(!mobileMenuOpen)}
           blockchainStatus={overview?.blockchainStatus}

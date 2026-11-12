@@ -1,0 +1,50 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --bg-primary: #101713;
+    --bg-secondary: #17221C;
+    --surface: #1C2922;
+    --accent: #B6F36B;
+    --accent-secondary: #66CDAA;
+    --text-main: #E8F0E8;
+    --text-muted: #89988C;
+    --border: #304238;
+  }
+
+  body {
+    background-color: #101713;
+    color: #E8F0E8;
+    font-family: 'Inter', sans-serif;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Space Grotesk', sans-serif;
+    letter-spacing: -0.02em;
+  }
+
+  /* Custom Control Room Scrollbars */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #101713;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #304238;
+    border-radius: 3px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #66CDAA;
+  }
+}
+
+.terminal-grid {
+  background-image: linear-gradient(to right, #17221C 1px, transparent 1px),
+                    linear-gradient(to bottom, #17221C 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+

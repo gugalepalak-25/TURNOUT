@@ -1,0 +1,259 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model DAO {
+  id               String      @id @default(uuid())
+  daoId            String      @unique // e.g. "hos" or "sputnik-v2.near"
+  name             String
+  network          String      @default("testnet")
+  charterThreshold Float       @default(80.0) // 80% House of Stake participation requirement
+  votingContract   String
+  venearContract   String
+  totalDelegates   Int         @default(0)
+  totalProposals   Int         @default(0)
+  activeProposals  Int         @default(0)
+  description      String?
+  createdAt        DateTime    @default(now())
+  updatedAt        DateTime    @updatedAt
+
+  delegates        Delegate[]
+  proposals        Proposal[]
+  rewardPools      RewardPool[]
+}
+
+model Delegate {
+  id                         String       @id @default(uuid())
+  accountId                  String       @unique // e.g. "infura.poolv1.near"
+  daoId                      String
+  name                       String
+  votingPower                String       @default("0") // veNEAR in yocto or human formatted
+  delegatorsCount            Int          @default(0)
+  participationRate          Float        @default(0.0)
+  reputationScore            Float        @default(0.0)
+  performanceGrade           String       @default("F") // A, B, C, D, F
+  publishedExplanationsCount Int          @default(0)
+  missingExplanationsCount   Int          @default(0)
+  missedProposalsCount       Int          @default(0)
+  isVerifiedIdentity         Boolean      @default(false)
+  forumUsername              String?
+  bio                        String?
+  profileImageUrl            String?
+  createdAt                  DateTime     @default(now())
+  updatedAt                  DateTime     @updatedAt
+
+  dao                        DAO          @relation(fields: [daoId], references: [id])
+  votes                      Vote[]
+  rationales                 Rationale[]
+  scorecards                 Scorecard[]
+  delegations                Delegation[]
+  rewardClaims               RewardClaim[]
+
+  @@index([daoId])
+  @@index([reputationScore])
+  @@index([performanceGrade])
+}
+
+model Proposal {
+  id                  String       @id @default(uuid())
+  proposalId          String       // on-chain proposal index/id e.g. "14"
+  daoId               String
+  title               String
+  description         String
+  proposer            String
+  status              String       // "Active", "Succeeded", "Defeated", "Expired", "Timelock", "Executed"
+  kind                String       @default("Classic") // "Classic", "FastTrack"
+  submissionTime      DateTime     @default(now())
+  voteStartTime       DateTime     @default(now())
+  voteEndTime         DateTime
+  executionTime       DateTime?
+  totalVotesCast      Int          @default(0)
+  yesVotes            String       @default("0")
+  noVotes             String       @default("0")
+  abstainVotes        String       @default("0")
+  forumUrl            String?
+  snapshotBlockHeight BigInt?
+  createdAt           DateTime     @default(now())
+  updatedAt           DateTime     @updatedAt
+
+  dao                 DAO          @relation(fields: [daoId], references: [id])
+  votes               Vote[]
+  rationales          Rationale[]
+
+  @@unique([daoId, proposalId])
+  @@index([status])
+}
+
+model Vote {
+  id                String    @id @default(uuid())
+  proposalId        String
+  delegateAccountId String
+  voteOption        String    // "Approve", "Reject", "Abstain", "Spam"
+  votingPower       String    @default("0")
+  blockHeight       BigInt
+  transactionHash   String?
+  timestamp         DateTime  @default(now())
+  createdAt         DateTime  @default(now())
+
+  proposal          Proposal  @relation(fields: [proposalId], references: [id])
+  delegate          Delegate  @relation(fields: [delegateAccountId], references: [accountId])
+
+  @@unique([proposalId, delegateAccountId])
+  @@index([delegateAccountId])
+  @@index([proposalId])
+}
+
+model Rationale {
+  id                 String    @id @default(uuid())
+  proposalId         String
+  delegateAccountId  String
+  forumPostId        String?
+  forumUrl           String?
+  author             String?
+  contentSummary     String
+  explanationStatus  String    // "Verified", "Unverified", "NotFound", "Ambiguous"
+  publishedAt        DateTime?
+  voteDeadline       DateTime
+  isTimely           Boolean   @default(false)
+  confidenceScore    Float     @default(0.0) // 0.0 - 1.0
+  evidenceSnippet    String?
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
+
+  proposal           Proposal  @relation(fields: [proposalId], references: [id])
+  delegate           Delegate  @relation(fields: [delegateAccountId], references: [accountId])
+
+  @@unique([proposalId, delegateAccountId])
+  @@index([delegateAccountId])
+  @@index([explanationStatus])
+}
+
+model Scorecard {
+  id                  String         @id @default(uuid())
+  delegateAccountId   String
+  evaluationPeriod    String         // e.g. "HOS-2026-Q1"
+  totalScore          Float
+  votingScore         Float          // max 40
+  rationaleScore      Float          // max 25
+  timelinessScore     Float          // max 20
+  consistencyScore    Float          // max 15
+  grade               String         // "A", "B", "C", "D", "F"
+  evidenceHash        String         // 64-char hex SHA-256
+  methodologyVersion  String         @default("turnout-scoring-v1.0.0")
+  publicationStatus   String         @default("Pending") // "Pending", "PublishedOnChain", "Failed"
+  onChainTxHash       String?
+  onChainPublishedAt  DateTime?
+  publisherAccount    String?
+  isCorrection        Boolean        @default(false)
+  previousEvidenceHash String?
+  correctionReason    String?
+  createdAt           DateTime       @default(now())
+  updatedAt           DateTime       @updatedAt
+
+  delegate            Delegate       @relation(fields: [delegateAccountId], references: [accountId])
+  evidence            ScoreEvidence?
+
+  @@unique([delegateAccountId, evaluationPeriod])
+  @@index([delegateAccountId])
+  @@index([grade])
+}
+
+model ScoreEvidence {
+  id                      String     @id @default(uuid())
+  scorecardId             String     @unique
+  eligibleProposalsCount  Int
+  votesCastCount          Int
+  verifiedRationalesCount Int
+  timelyRationalesCount   Int
+  rollingConsistencyPct   Float
+  rawDataSnapshot         String     // JSON serialized canonical input data
+  createdAt               DateTime   @default(now())
+
+  scorecard               Scorecard  @relation(fields: [scorecardId], references: [id], onDelete: Cascade)
+}
+
+model Delegation {
+  id                       String    @id @default(uuid())
+  delegatorAccountId       String    // User's connected wallet
+  delegateAccountId        String    // Watched delegate
+  votingPower              String    @default("0")
+  isMonitored              Boolean   @default(true)
+  minParticipationThreshold Float     @default(80.0) // Alert threshold %
+  backupDelegateAccountId  String?   // Suggested fallback delegate
+  alertActive              Boolean   @default(false)
+  createdAt                DateTime  @default(now())
+  updatedAt                DateTime  @updatedAt
+
+  delegate                 Delegate  @relation(fields: [delegateAccountId], references: [accountId])
+
+  @@unique([delegatorAccountId, delegateAccountId])
+  @@index([delegatorAccountId])
+}
+
+model RewardPool {
+  id                String        @id @default(uuid())
+  daoId             String
+  name              String
+  totalRewardAmount String        // Total NEAR allocated e.g. "50000"
+  tokenSymbol       String        @default("NEAR")
+  period            String        // "HOS-2026-Q1"
+  minScoreRequired  Float         @default(80.0)
+  minHoSThreshold   Float         @default(80.0)
+  status            String        @default("Draft") // "Draft", "Active", "ProposalGenerated", "Executed"
+  createdBy         String
+  payoutTxHash      String?
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @updatedAt
+
+  dao               DAO           @relation(fields: [daoId], references: [id])
+  claims            RewardClaim[]
+
+  @@index([daoId])
+  @@index([period])
+}
+
+model RewardClaim {
+  id                String     @id @default(uuid())
+  poolId            String
+  delegateAccountId String
+  score             Float
+  grade             String
+  eligible          Boolean    @default(false)
+  allocatedAmount   String     @default("0")
+  isClaimed         Boolean    @default(false)
+  claimTxHash       String?
+  createdAt         DateTime   @default(now())
+  updatedAt         DateTime   @updatedAt
+
+  pool              RewardPool @relation(fields: [poolId], references: [id], onDelete: Cascade)
+  delegate          Delegate   @relation(fields: [delegateAccountId], references: [accountId])
+
+  @@unique([poolId, delegateAccountId])
+  @@index([poolId])
+  @@index([delegateAccountId])
+}
+
+model WalletSession {
+  id              String    @id @default(uuid())
+  accountId       String    @unique
+  networkId       String    @default("testnet")
+  lastConnectedAt DateTime  @default(now())
+  createdAt       DateTime  @default(now())
+}
+
+model SyncState {
+  id                String    @id @default(uuid())
+  key               String    @unique // e.g. "hos_proposals_sync", "hos_votes_sync"
+  lastBlockHeight   BigInt    @default(0)
+  lastSyncTimestamp DateTime  @default(now())
+  status            String    @default("IDLE") // "IDLE", "SYNCING", "SUCCESS", "ERROR"
+  errorMessage      String?
+  metadata          String?   // JSON metadata
+  updatedAt         DateTime  @updatedAt
+}
+

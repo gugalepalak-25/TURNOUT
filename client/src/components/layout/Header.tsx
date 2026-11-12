@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Menu, Wallet, CheckCircle2, ShieldAlert, Cpu, ArrowUpRight } from 'lucide-react';
 import { useNearWallet } from '../../context/NearWalletContext.js';
 import { MonospaceAddress } from '../common/MonospaceAddress.js';
@@ -72,15 +73,13 @@ export const Header: React.FC<HeaderProps> = ({ onToggleMobileMenu, blockchainSt
           </div>
 
           {/* Quick link to Landing / Portal */}
-          <a
-            href="/"
-            target="_blank"
-            rel="noopener noreferrer"
+          <Link
+            to="/"
             className="hidden md:inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-sans text-[#c8c8c8] hover:text-white bg-[#28282a] hover:bg-[#323234] border border-white/20 transition-all shadow-[0_4px_14px_rgba(0,0,0,0.16)] hover:-translate-y-0.5"
           >
             <span>Landing</span>
             <ArrowUpRight className="w-3 h-3 text-[#8e8e8e]" />
-          </a>
+          </Link>
 
           {/* Wallet Connection */}
           {isConnected && accountId ? (

@@ -1,5 +1,5 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, Link } from 'react-router-dom';
 import {
   LayoutDashboard,
   Landmark,
@@ -12,6 +12,7 @@ import {
   FileCheck2,
   Settings,
   Radio,
+  Home,
 } from 'lucide-react';
 import { Logo } from '../common/Logo.js';
 
@@ -21,30 +22,40 @@ interface SidebarProps {
 
 export const Sidebar: React.FC<SidebarProps> = ({ onCloseMobile }) => {
   const navItems = [
-    { label: 'Overview', to: '/', icon: LayoutDashboard },
-    { label: 'House of Stake', to: '/house-of-stake', icon: Landmark, badge: 'Core' },
-    { label: 'Sputnik DAOs', to: '/sputnik', icon: Layers, badge: 'Phase 7' },
-    { label: 'Leaderboard', to: '/leaderboard', icon: Award },
-    { label: 'Proposals', to: '/proposals', icon: Vote },
-    { label: 'AI Analyst', to: '/analyst', icon: Bot, badge: 'AI' },
-    { label: 'Rewards', to: '/rewards', icon: Gift },
-    { label: 'Delegation Guardian', to: '/guardian', icon: ShieldCheck },
-    { label: 'Scorecards', to: '/scorecards', icon: FileCheck2 },
-    { label: 'Settings', to: '/settings', icon: Settings },
+    { label: 'Overview', to: '/app', icon: LayoutDashboard },
+    { label: 'House of Stake', to: '/app/house-of-stake', icon: Landmark, badge: 'Core' },
+    { label: 'Sputnik DAOs', to: '/app/sputnik', icon: Layers, badge: 'Phase 7' },
+    { label: 'Leaderboard', to: '/app/leaderboard', icon: Award },
+    { label: 'Proposals', to: '/app/proposals', icon: Vote },
+    { label: 'AI Analyst', to: '/app/analyst', icon: Bot, badge: 'AI' },
+    { label: 'Rewards', to: '/app/rewards', icon: Gift },
+    { label: 'Delegation Guardian', to: '/app/guardian', icon: ShieldCheck },
+    { label: 'Scorecards', to: '/app/scorecards', icon: FileCheck2 },
+    { label: 'Settings', to: '/app/settings', icon: Settings },
   ];
 
   return (
     <aside className="w-64 h-screen bg-black/60 backdrop-blur-2xl border-r border-white/10 flex flex-col justify-between select-none">
       {/* Brand Header */}
       <div>
-        <div className="p-5 border-b border-white/10">
-          <Logo />
+        <div className="p-5 border-b border-white/10 flex items-center justify-between">
+          <Link to="/" title="Return to Landing Page">
+            <Logo />
+          </Link>
+          <Link
+            to="/"
+            className="text-[10px] font-mono text-[#8e8e8e] hover:text-white bg-[#28282a] border border-white/15 px-2 py-1 rounded-full flex items-center gap-1"
+            title="Landing Page"
+          >
+            <Home className="w-3 h-3" />
+            <span className="hidden sm:inline">Landing</span>
+          </Link>
         </div>
 
         {/* Navigation list */}
         <div className="py-4 px-3">
           <div className="text-[10px] font-dotmatrix uppercase tracking-widest text-[#8e8e8e] px-3 mb-2.5">
-            NAVIGATION PILLS
+            CONTROL ROOM PILLS
           </div>
           <nav className="space-y-1.5">
             {navItems.map((item) => {
@@ -53,6 +64,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ onCloseMobile }) => {
                 <NavLink
                   key={item.to}
                   to={item.to}
+                  end={item.to === '/app'}
                   onClick={onCloseMobile}
                   className={({ isActive }) =>
                     `flex items-center justify-between px-3.5 py-2.5 rounded-full text-xs font-medium transition-all ${

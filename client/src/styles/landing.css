@@ -1,0 +1,515 @@
+/* ==========================================================================
+   CSS Variables & Font Declarations
+   ========================================================================== */
+
+:root {
+  --bg: #000000;
+  --text: #ffffff;
+  --muted: #8e8e8e;
+  --nav-text: #2e2e2e;
+  --pill-dark: #28282a;
+  --sign-in-text: #c8c8c8;
+  --nav-shadow: 0 4px 14px rgba(0, 0, 0, 0.16);
+  --trust-bg: #28282a;
+  --trust-border: rgba(255, 255, 255, 0.4);
+  --trust-text: #c4c2c3;
+  --font-sans: "Inter", "Segoe UI", system-ui, sans-serif;
+  --font-display: "BubbledotICG-FinePos", "Geist Pixel Circle", monospace;
+}
+
+@font-face {
+  font-family: "Geist Pixel Circle";
+  src: url("/fonts/GeistPixel-Circle.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Background video container */
+.landing-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: #000000;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.landing-bg-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Layout container: single viewport, 3 vertical regions */
+.landing-page {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  height: 100vh;
+  height: 100dvh;
+  padding: clamp(16px, 2.4vh, 28px) clamp(14px, 3vw, 32px);
+  overflow: hidden;
+  background-color: #000000;
+  color: #ffffff;
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ==========================================================================
+   1) Header (Desktop & Common)
+   ========================================================================== */
+
+.landing-header {
+  width: 100%;
+  max-width: 760px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(14px, 2.5vw, 24px);
+  flex-shrink: 0;
+  z-index: 10;
+  animation: landingSlideDown 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* Logo Button */
+.landing-logo-btn {
+  width: clamp(40px, 4.4vw, 46px);
+  height: clamp(40px, 4.4vw, 46px);
+  border-radius: 50%;
+  background-color: #ffffff;
+  box-shadow: var(--nav-shadow);
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+  text-decoration: none;
+}
+
+.landing-logo-btn:hover {
+  transform: scale(1.04);
+}
+
+.landing-logo-img {
+  width: 72%;
+  height: 72%;
+  object-fit: contain;
+  display: block;
+}
+
+/* Nav Pill (White) */
+.landing-nav-pill {
+  flex: 1;
+  max-width: 480px;
+  height: clamp(44px, 5.2vw, 48px);
+  background-color: #ffffff;
+  border-radius: 999px;
+  padding: 4px 8px;
+  box-shadow: var(--nav-shadow);
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+.landing-nav-link {
+  position: relative;
+  font-family: var(--font-sans);
+  font-size: clamp(12px, 1.3vw, 14.5px);
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  color: var(--nav-text);
+  text-decoration: none;
+  opacity: 0.55;
+  padding: 6px 10px;
+  transition: opacity 0.2s ease;
+  white-space: nowrap;
+}
+
+.landing-nav-link:hover {
+  opacity: 0.85;
+}
+
+.landing-nav-link.active {
+  opacity: 1;
+}
+
+/* Active indicator: three 3x3px black dots */
+.landing-nav-link.active::after {
+  content: "";
+  position: absolute;
+  bottom: 5px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 3px;
+  height: 3px;
+  background-color: #000000;
+  border-radius: 50%;
+  box-shadow: -5px 0 0 #000000, 5px 0 0 #000000;
+}
+
+/* Sign In Button (Dark Pill) */
+.landing-sign-in-btn {
+  height: clamp(44px, 5.2vw, 48px);
+  padding: 0 clamp(16px, 2.2vw, 22px);
+  background-color: var(--pill-dark);
+  color: var(--sign-in-text);
+  font-family: var(--font-sans);
+  font-size: clamp(12.5px, 1.4vw, 14px);
+  font-weight: 500;
+  border-radius: 999px;
+  box-shadow: var(--nav-shadow);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  transition: background-color 0.25s ease, color 0.25s ease, transform 0.25s ease;
+  white-space: nowrap;
+  flex-shrink: 0;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.landing-sign-in-btn:hover {
+  background-color: #323234;
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+
+/* Burger Button */
+.landing-burger-btn {
+  display: none;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background-color: var(--pill-dark);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  cursor: pointer;
+  box-shadow: var(--nav-shadow);
+  position: relative;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  transition: background-color 0.25s ease, transform 0.25s ease;
+  z-index: 60;
+}
+
+.landing-burger-bar {
+  width: 18px;
+  height: 1.5px;
+  background-color: #ffffff;
+  border-radius: 2px;
+  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.2s ease, background-color 0.25s ease;
+}
+
+/* ==========================================================================
+   2) Hero (Center)
+   ========================================================================== */
+
+.landing-hero {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  width: 100%;
+  max-width: 900px;
+  z-index: 5;
+}
+
+/* Trust Row */
+.landing-trust-row {
+  --trust-size: clamp(36px, 4.5vw, 42px);
+  display: inline-flex;
+  align-items: center;
+  margin-bottom: clamp(16px, 2.5vh, 26px);
+  user-select: none;
+}
+
+.landing-avatar-ring {
+  width: var(--trust-size);
+  height: var(--trust-size);
+  border-radius: 50%;
+  background-color: var(--trust-bg);
+  border: 1px solid var(--trust-border);
+  padding: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  position: relative;
+}
+
+.landing-avatar-inner {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background-color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.landing-avatar-inner i {
+  color: #111111;
+  font-size: calc(var(--trust-size) * 0.34);
+}
+
+.landing-avatar-1 { z-index: 1; }
+.landing-avatar-2 { z-index: 2; margin-left: calc(var(--trust-size) * -0.42); }
+.landing-avatar-3 { z-index: 4; margin-left: calc(var(--trust-size) * -0.42); }
+
+.landing-avatar-1:hover { transform: translateY(-2px); }
+.landing-avatar-2:hover { transform: translateY(-4px); }
+.landing-avatar-3:hover { transform: translateY(-2px); }
+
+/* Trust Pill */
+.landing-trust-pill {
+  height: var(--trust-size);
+  background-color: var(--trust-bg);
+  border: 1px solid var(--trust-border);
+  border-radius: 999px;
+  margin-left: calc(var(--trust-size) * -0.42);
+  padding-left: calc(var(--trust-size) * 0.58);
+  padding-right: clamp(14px, 2vw, 18px);
+  display: flex;
+  align-items: center;
+  z-index: 3;
+}
+
+.landing-trust-pill span {
+  font-family: var(--font-sans);
+  font-size: clamp(12px, 1.4vw, 13.5px);
+  font-weight: 500;
+  color: var(--trust-text);
+  white-space: nowrap;
+}
+
+/* Headline in BubbledotICG-FinePos retro dot-matrix */
+.landing-headline {
+  font-family: var(--font-display);
+  font-weight: 400;
+  color: #ffffff;
+  font-size: clamp(28px, 6vw, 76px);
+  letter-spacing: -0.04em;
+  line-height: 1.12;
+  white-space: nowrap;
+  overflow: hidden;
+  text-transform: none;
+}
+
+.landing-headline-line {
+  display: block;
+  opacity: 0;
+  transform: translateY(14px);
+  animation: landingHeadlineFade 0.85s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.landing-line-1 {
+  animation-delay: 0.12s;
+}
+
+.landing-line-2 {
+  animation-delay: 0.3s;
+}
+
+/* Subhead */
+.landing-subhead {
+  max-width: min(520px, 92%);
+  margin-top: clamp(14px, 2vh, 22px);
+  font-family: var(--font-sans);
+  font-size: clamp(14px, 1.6vw, 17px);
+  font-weight: 400;
+  color: #d0d0d0;
+  opacity: 0.85;
+  line-height: 1.55;
+}
+
+/* CTA Row */
+.landing-cta-wrap {
+  margin-top: clamp(20px, 2.8vh, 32px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.landing-cta-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background-color: #ffffff;
+  color: #000000;
+  font-family: var(--font-sans);
+  font-size: clamp(13.5px, 1.5vw, 15px);
+  font-weight: 600;
+  padding: clamp(11px, 1.6vh, 14px) clamp(24px, 3vw, 32px);
+  border-radius: 999px;
+  text-decoration: none;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.15),
+              0 0 22px rgba(255, 255, 255, 0.32),
+              0 0 44px rgba(255, 255, 255, 0.12);
+  transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.25s ease;
+}
+
+.landing-cta-btn:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.25),
+              0 0 28px rgba(255, 255, 255, 0.45),
+              0 0 54px rgba(255, 255, 255, 0.2);
+}
+
+.landing-secondary-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background-color: #28282a;
+  color: #ffffff;
+  font-family: var(--font-sans);
+  font-size: clamp(13px, 1.4vw, 14.5px);
+  font-weight: 500;
+  padding: clamp(11px, 1.6vh, 14px) clamp(20px, 2.5vw, 26px);
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  text-decoration: none;
+  transition: background-color 0.25s ease, transform 0.25s ease;
+}
+
+.landing-secondary-btn:hover {
+  background-color: #323234;
+  transform: translateY(-2px);
+}
+
+/* ==========================================================================
+   3) Stats Footer
+   ========================================================================== */
+
+.landing-stats-footer {
+  width: 100%;
+  max-width: 920px;
+  flex-shrink: 0;
+  z-index: 5;
+  padding-top: clamp(10px, 1.5vh, 20px);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.landing-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: clamp(16px, 2vw, 28px);
+  align-items: center;
+  width: 100%;
+}
+
+.landing-stat-item {
+  display: flex;
+  align-items: center;
+  gap: clamp(8px, 1.2vw, 14px);
+}
+
+.landing-stat-icon {
+  font-family: var(--font-display);
+  font-size: clamp(22px, 3vw, 33px);
+  color: #ffffff;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.landing-stat-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.landing-stat-val {
+  font-family: var(--font-sans);
+  font-size: clamp(18px, 2.2vw, 26px);
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  color: #ffffff;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.15;
+}
+
+.landing-stat-label {
+  font-family: var(--font-sans);
+  font-size: clamp(11px, 1.2vw, 12.5px);
+  color: var(--muted);
+  line-height: 1.2;
+}
+
+/* ==========================================================================
+   Shared Entrance Animations
+   ========================================================================== */
+
+.landing-anim {
+  opacity: 0;
+  transform: translateY(22px) scale(0.98);
+  filter: blur(6px);
+  animation: landingReveal 0.85s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation-delay: var(--d, 0s);
+}
+
+@keyframes landingReveal {
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0px);
+  }
+}
+
+@keyframes landingSlideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes landingHeadlineFade {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Mobile Media Queries */
+@media (max-width: 720px) {
+  .landing-nav-pill,
+  .landing-sign-in-btn {
+    display: none !important;
+  }
+  .landing-burger-btn {
+    display: flex !important;
+  }
+  .landing-header {
+    justify-content: space-between !important;
+  }
+  .landing-stats-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 14px 18px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .landing-headline {
+    font-size: clamp(24px, 7.5vw, 36px) !important;
+  }
+  .landing-stats-grid {
+    grid-template-columns: 1fr 1fr !important;
+  }
+}

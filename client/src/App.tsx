@@ -4,6 +4,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { NearWalletProvider } from './context/NearWalletContext.js';
 import { Shell } from './components/layout/Shell.js';
 
+import { LandingPage } from './pages/LandingPage.js';
 import { OverviewPage } from './pages/OverviewPage.js';
 import { HouseOfStakePage } from './pages/HouseOfStakePage.js';
 import { SputnikPage } from './pages/SputnikPage.js';
@@ -32,7 +33,12 @@ export const App: React.FC = () => {
       <NearWalletProvider>
         <BrowserRouter>
           <Routes>
-            <Route path="/" element={<Shell />}>
+            {/* Main Landing Page (Single-Viewport Full-Bleed Video UI/UX) */}
+            <Route path="/" element={<LandingPage />} />
+            <Route path="/landing" element={<LandingPage />} />
+
+            {/* DApp Control Room Application Routes (/app) */}
+            <Route path="/app" element={<Shell />}>
               <Route index element={<OverviewPage />} />
               <Route path="house-of-stake" element={<HouseOfStakePage />} />
               <Route path="sputnik" element={<SputnikPage />} />
@@ -45,8 +51,25 @@ export const App: React.FC = () => {
               <Route path="guardian" element={<GuardianPage />} />
               <Route path="scorecards" element={<ScorecardsPage />} />
               <Route path="settings" element={<SettingsPage />} />
-              <Route path="*" element={<Navigate to="/" replace />} />
             </Route>
+
+            {/* Direct Shortcuts without /app prefix */}
+            <Route element={<Shell />}>
+              <Route path="/overview" element={<OverviewPage />} />
+              <Route path="/house-of-stake" element={<HouseOfStakePage />} />
+              <Route path="/sputnik" element={<SputnikPage />} />
+              <Route path="/leaderboard" element={<LeaderboardPage />} />
+              <Route path="/delegate/:account" element={<DelegatePassportPage />} />
+              <Route path="/proposals" element={<ProposalsPage />} />
+              <Route path="/proposals/:id" element={<ProposalDetailPage />} />
+              <Route path="/analyst" element={<AnalystPage />} />
+              <Route path="/rewards" element={<RewardsPage />} />
+              <Route path="/guardian" element={<GuardianPage />} />
+              <Route path="/scorecards" element={<ScorecardsPage />} />
+              <Route path="/settings" element={<SettingsPage />} />
+            </Route>
+
+            <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </BrowserRouter>
       </NearWalletProvider>
@@ -55,4 +78,3 @@ export const App: React.FC = () => {
 };
 
 export default App;
-

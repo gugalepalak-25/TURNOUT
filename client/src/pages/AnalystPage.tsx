@@ -129,9 +129,8 @@ export const AnalystPage: React.FC = () => {
           {messages.map((m, idx) => (
             <div
               key={idx}
-              className={`flex gap-3 ${
-                m.role === 'user' ? 'justify-end' : 'justify-start'
-              }`}
+              className={`flex gap-3 ${m.role === 'user' ? 'justify-end' : 'justify-start'
+                }`}
             >
               {m.role === 'assistant' && (
                 <div className="w-8 h-8 rounded-full bg-white text-black flex items-center justify-center shrink-0 shadow-sm">
@@ -140,11 +139,10 @@ export const AnalystPage: React.FC = () => {
               )}
 
               <div
-                className={`max-w-2xl rounded-2xl p-5 font-sans text-sm shadow-[0_4px_14px_rgba(0,0,0,0.16)] ${
-                  m.role === 'user'
+                className={`max-w-2xl rounded-2xl p-5 font-sans text-sm shadow-[0_4px_14px_rgba(0,0,0,0.16)] ${m.role === 'user'
                     ? 'bg-white text-black font-semibold text-xs rounded-br-sm'
                     : 'bg-[#121214]/90 border border-white/15 text-white rounded-bl-sm'
-                }`}
+                  }`}
               >
                 <div className="leading-relaxed whitespace-pre-line">{m.content}</div>
 

@@ -1,48 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, Sparkles, Shield, Cpu, ExternalLink } from 'lucide-react';
+import { ArrowRight, ShieldCheck, Award, Bot, Radio } from 'lucide-react';
 import '../styles/landing.css';
 
 export const LandingPage: React.FC = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-
-  // Animated stats counting hook
-  const [stat1, setStat1] = useState(0);
-  const [stat2, setStat2] = useState(0);
-  const [stat3, setStat3] = useState(0);
-  const [stat4, setStat4] = useState(0);
-
-  useEffect(() => {
-    let animationFrameId: number;
-    const startTime = performance.now();
-    const duration = 1600;
-
-    const easeOutCubic = (t: number) => 1 - Math.pow(1 - t, 3);
-
-    const step = (currentTime: number) => {
-      const elapsed = currentTime - startTime;
-      const progress = Math.min(elapsed / duration, 1);
-      const eased = easeOutCubic(progress);
-
-      setStat1(parseFloat((eased * 99.9).toFixed(1)));
-      setStat2(parseFloat((eased * 2.4).toFixed(1)));
-      setStat3(Math.floor(eased * 120));
-      setStat4(Math.floor(eased * 12));
-
-      if (progress < 1) {
-        animationFrameId = requestAnimationFrame(step);
-      }
-    };
-
-    const timer = setTimeout(() => {
-      animationFrameId = requestAnimationFrame(step);
-    }, 350);
-
-    return () => {
-      clearTimeout(timer);
-      cancelAnimationFrame(animationFrameId);
-    };
-  }, []);
 
   return (
     <div className="landing-page">
@@ -54,9 +16,9 @@ export const LandingPage: React.FC = () => {
             type="video/mp4"
           />
         </video>
-        {/* Subtle cinematic overlays for legibility */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/40 to-black/85 pointer-events-none" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,0,0,0)_0%,rgba(0,0,0,0.7)_100%)] pointer-events-none" />
+        {/* Subtle cinematic overlays for maximum legibility */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/85 via-black/45 to-black/90 pointer-events-none" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,0,0,0)_0%,rgba(0,0,0,0.75)_100%)] pointer-events-none" />
       </div>
 
       {/* 1) Header */}
@@ -113,7 +75,7 @@ export const LandingPage: React.FC = () => {
 
         {/* Desktop Launch / Sign In (Dark Pill) */}
         <Link to="/app" className="landing-sign-in-btn">
-          Enter App
+          Enter Control Room
         </Link>
 
         {/* Mobile Hamburger Button */}
@@ -130,7 +92,7 @@ export const LandingPage: React.FC = () => {
 
       {/* Mobile Drawer Sheet */}
       {mobileMenuOpen && (
-        <div className="fixed inset-0 z-50 flex flex-col justify-start p-6 bg-black/90 backdrop-blur-xl">
+        <div className="fixed inset-0 z-50 flex flex-col justify-start p-6 bg-black/95 backdrop-blur-2xl">
           <div className="flex items-center justify-between pb-6 border-b border-white/10 mb-6">
             <div className="font-dotmatrix text-lg text-white">TURNOUT</div>
             <button
@@ -187,91 +149,82 @@ export const LandingPage: React.FC = () => {
         </div>
       )}
 
-      {/* 2) Hero (Center) */}
+      {/* 2) Hero (Center - Perfectly Aligned) */}
       <section className="landing-hero" id="home">
-        {/* Trust Row */}
+        {/* Governance Verified Pill */}
         <div className="landing-trust-row landing-anim" style={{ ['--d' as any]: '0.05s' }}>
-          <div className="landing-avatar-ring landing-avatar-1" title="Microsoft">
+          <div className="landing-avatar-ring landing-avatar-1" title="NEAR Protocol">
             <div className="landing-avatar-inner">
-              <i className="fa-brands fa-microsoft" />
+              <span className="text-[11px] font-bold text-black font-mono">N</span>
             </div>
           </div>
-          <div className="landing-avatar-ring landing-avatar-2" title="Amazon">
+          <div className="landing-avatar-ring landing-avatar-2" title="House of Stake">
             <div className="landing-avatar-inner">
-              <i className="fa-brands fa-amazon" />
+              <ShieldCheck className="w-3.5 h-3.5 text-black" />
             </div>
           </div>
-          <div className="landing-avatar-ring landing-avatar-3" title="Google">
+          <div className="landing-avatar-ring landing-avatar-3" title="On-Chain Registry">
             <div className="landing-avatar-inner">
-              <i className="fa-brands fa-google" />
+              <Award className="w-3.5 h-3.5 text-black" />
             </div>
           </div>
           <div className="landing-trust-pill">
-            <span>Trusted by 2000+ Enterprises</span>
+            <span className="w-2 h-2 rounded-full bg-[#B6F36B] shadow-[0_0_8px_#B6F36B]" />
+            <span>NEAR Protocol • House of Stake Governance</span>
           </div>
         </div>
 
         {/* Headline */}
         <h1 className="landing-headline landing-anim" style={{ ['--d' as any]: '0.12s' }}>
-          <span className="landing-headline-line landing-line-1">INTELLIGENCE</span>
-          <span className="landing-headline-line landing-line-2">DESIGNED TO EVOLVE</span>
+          <span className="landing-headline-line landing-line-1">THE ACCOUNTABILITY LAYER</span>
+          <span className="landing-headline-line landing-line-2">FOR DECENTRALIZED GOVERNANCE</span>
         </h1>
 
         {/* Subhead */}
         <p className="landing-subhead landing-anim" style={{ ['--d' as any]: '0.22s' }}>
-          A unified AI work platform transforming raw data into self-learning automation, resilient systems, and ambient intelligence.
+          Turnout transforms on-chain NEAR voting records into transparent reputation, verifiable performance scorecards, and performance-based incentives across House of Stake.
         </p>
 
+        {/* Governance Lifecycle Workflow Track */}
+        <div className="landing-workflow-pills landing-anim" style={{ ['--d' as any]: '0.30s' }}>
+          <span className="landing-stage-pill active">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#B6F36B] inline-block mr-1.5 animate-pulse-subtle" />
+            MONITOR
+          </span>
+          <span className="landing-arrow-div">→</span>
+          <span className="landing-stage-pill">EVALUATE</span>
+          <span className="landing-arrow-div">→</span>
+          <span className="landing-stage-pill">VERIFY</span>
+          <span className="landing-arrow-div">→</span>
+          <span className="landing-stage-pill">REWARD</span>
+          <span className="landing-arrow-div">→</span>
+          <span className="landing-stage-pill">PROTECT</span>
+        </div>
+
         {/* CTA Row */}
-        <div className="landing-cta-wrap landing-anim" style={{ ['--d' as any]: '0.34s' }}>
+        <div className="landing-cta-wrap landing-anim" style={{ ['--d' as any]: '0.38s' }}>
           <Link to="/app" className="landing-cta-btn">
-            <span>Enter Control Room</span>
+            <span>Launch Control Room</span>
             <ArrowRight className="w-4 h-4" />
           </Link>
-          <Link to="/app/house-of-stake" className="landing-secondary-btn">
-            <span>Explore Governance</span>
+          <Link to="/app/leaderboard" className="landing-secondary-btn">
+            <span>Delegate Directory</span>
+          </Link>
+          <Link to="/app/analyst" className="landing-secondary-btn">
+            <Bot className="w-3.5 h-3.5" />
+            <span>AI Analyst</span>
           </Link>
         </div>
       </section>
 
-      {/* 3) Stats Footer */}
-      <footer className="landing-stats-footer landing-anim" style={{ ['--d' as any]: '0.44s' }}>
-        <div className="landing-stats-grid">
-          {/* Stat 1 */}
-          <div className="landing-stat-item">
-            <span className="landing-stat-icon">⊙</span>
-            <div className="landing-stat-content">
-              <span className="landing-stat-val">{stat1}%</span>
-              <span className="landing-stat-label">System Precision</span>
-            </div>
-          </div>
-
-          {/* Stat 2 */}
-          <div className="landing-stat-item">
-            <span className="landing-stat-icon">▲</span>
-            <div className="landing-stat-content">
-              <span className="landing-stat-val">{stat2}x</span>
-              <span className="landing-stat-label">Iteration Velocity</span>
-            </div>
-          </div>
-
-          {/* Stat 3 */}
-          <div className="landing-stat-item">
-            <span className="landing-stat-icon">❖</span>
-            <div className="landing-stat-content">
-              <span className="landing-stat-val">{stat3}M+</span>
-              <span className="landing-stat-label">Workflows Automated</span>
-            </div>
-          </div>
-
-          {/* Stat 4 */}
-          <div className="landing-stat-item">
-            <span className="landing-stat-icon">⚡</span>
-            <div className="landing-stat-content">
-              <span className="landing-stat-val">&lt;{stat4}ms</span>
-              <span className="landing-stat-label">Inference Latency</span>
-            </div>
-          </div>
+      {/* 3) Clean Minimalist Telemetry Footer (Old 4-stat line completely removed) */}
+      <footer className="landing-footer-telemetry landing-anim" style={{ ['--d' as any]: '0.45s' }}>
+        <div className="flex items-center gap-2">
+          <span className="w-2 h-2 rounded-full bg-[#B6F36B] animate-pulse-subtle" />
+          <span>TURNOUT PROTOCOL • NEAR TESTNET</span>
+        </div>
+        <div>
+          <span>HOUSE OF STAKE EPOCH 14 • veNEAR SNAPSHOTS • NON-CUSTODIAL</span>
         </div>
       </footer>
     </div>

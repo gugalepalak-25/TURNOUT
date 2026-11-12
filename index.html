@@ -3,13 +3,13 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Intelligence Designed To Evolve</title>
+    <title>TURNOUT — The Accountability Layer for Decentralized Governance</title>
 
     <!-- Inter font from Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
 
@@ -40,6 +40,7 @@
           type="video/mp4"
         />
       </video>
+      <div class="video-overlay"></div>
     </div>
 
     <!-- Page composition: 1 viewport, 3 vertical regions -->
@@ -59,14 +60,15 @@
 
         <!-- Desktop Navigation Pill (White) -->
         <nav class="nav-pill" aria-label="Primary Navigation">
-          <a href="#home" class="nav-link active">Home</a>
-          <a href="#product" class="nav-link">Product</a>
-          <a href="#case-studies" class="nav-link">Case Studies</a>
-          <a href="#contact" class="nav-link">Contact</a>
+          <a href="/" class="nav-link active">Home</a>
+          <a href="http://localhost:5173/app/house-of-stake" class="nav-link">House of Stake</a>
+          <a href="http://localhost:5173/app/leaderboard" class="nav-link">Leaderboard</a>
+          <a href="http://localhost:5173/app/analyst" class="nav-link">AI Analyst</a>
+          <a href="http://localhost:5173/app/scorecards" class="nav-link">Scorecards</a>
         </nav>
 
         <!-- Desktop Sign In (Dark Pill) -->
-        <a href="http://localhost:5173" class="sign-in-btn">Sign in</a>
+        <a href="http://localhost:5173/app" class="sign-in-btn">Enter App</a>
 
         <!-- Mobile Burger Button -->
         <button
@@ -85,120 +87,89 @@
       <div class="mobile-overlay" id="mobile-overlay" hidden></div>
       <div class="mobile-menu" id="mobile-menu" hidden>
         <nav class="mobile-nav">
-          <a href="#home" class="mobile-link active">Home</a>
-          <a href="#product" class="mobile-link">Product</a>
-          <a href="#case-studies" class="mobile-link">Case Studies</a>
-          <a href="#contact" class="mobile-link">Contact</a>
-          <a href="http://localhost:5173" class="mobile-sign-in">Sign in</a>
+          <a href="/" class="mobile-link active">Home</a>
+          <a href="http://localhost:5173/app/house-of-stake" class="mobile-link">House of Stake</a>
+          <a href="http://localhost:5173/app/leaderboard" class="mobile-link">Leaderboard</a>
+          <a href="http://localhost:5173/app/analyst" class="mobile-link">AI Analyst</a>
+          <a href="http://localhost:5173/app/scorecards" class="mobile-link">Scorecards</a>
+          <a href="http://localhost:5173/app" class="mobile-sign-in">Launch Control Room</a>
         </nav>
       </div>
 
-      <!-- 2) Hero -->
+      <!-- 2) Hero (Properly Aligned & Centered) -->
       <section class="hero" id="home">
-        <!-- Trust Row -->
+        <!-- Governance Trust Pill -->
         <div class="trust-row anim" style="--d: 0.05s">
-          <div class="avatar-ring avatar-1" title="Microsoft">
+          <div class="avatar-ring avatar-1" title="NEAR Protocol">
             <span class="avatar-inner">
-              <i class="fa-brands fa-microsoft"></i>
+              <strong style="color: #111; font-family: monospace; font-size: 13px;">N</strong>
             </span>
           </div>
-          <div class="avatar-ring avatar-2" title="Amazon">
+          <div class="avatar-ring avatar-2" title="House of Stake">
             <span class="avatar-inner">
-              <i class="fa-brands fa-amazon"></i>
+              <i class="fa-solid fa-shield-halved"></i>
             </span>
           </div>
-          <div class="avatar-ring avatar-3" title="Google">
+          <div class="avatar-ring avatar-3" title="On-Chain Registry">
             <span class="avatar-inner">
-              <i class="fa-brands fa-google"></i>
+              <i class="fa-solid fa-award"></i>
             </span>
           </div>
           <div class="trust-pill">
-            <span>Trusted by 2000+ Enterprises</span>
+            <span style="display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: #B6F36B; margin-right: 7px;"></span>
+            <span>NEAR Protocol • House of Stake Governance</span>
           </div>
         </div>
 
         <!-- Headline in BubbledotICG-FinePos retro dot-matrix -->
         <h1 class="headline anim">
-          <span class="headline-line line-1">Intelligence</span>
-          <span class="headline-line line-2">Designed To Evolve</span>
+          <span class="headline-line line-1">THE ACCOUNTABILITY LAYER</span>
+          <span class="headline-line line-2">FOR DECENTRALIZED GOVERNANCE</span>
         </h1>
 
         <!-- Subhead -->
-        <p class="subhead anim" style="--d: 0.28s">
-          Build applications that reason, adapt and collaborate using a modular
-          AI platform designed for production.
+        <p class="subhead anim" style="--d: 0.24s">
+          Turnout transforms on-chain NEAR voting records into transparent reputation,
+          verifiable performance scorecards, and performance-based incentives across House of Stake.
         </p>
 
-        <!-- CTA -->
-        <div class="cta-wrap anim" style="--d: 0.4s">
-          <a href="http://localhost:5173" class="cta-btn">Get Started</a>
+        <!-- Governance Stage Pills -->
+        <div class="workflow-pills anim" style="--d: 0.32s">
+          <span class="stage-pill active">● MONITOR</span>
+          <span class="stage-arrow">→</span>
+          <span class="stage-pill">EVALUATE</span>
+          <span class="stage-arrow">→</span>
+          <span class="stage-pill">VERIFY</span>
+          <span class="stage-arrow">→</span>
+          <span class="stage-pill">REWARD</span>
+          <span class="stage-arrow">→</span>
+          <span class="stage-pill">PROTECT</span>
+        </div>
+
+        <!-- CTA Row -->
+        <div class="cta-wrap anim" style="--d: 0.40s">
+          <a href="http://localhost:5173/app" class="cta-btn">
+            <span>Launch Control Room</span>
+            <span style="margin-left: 6px;">→</span>
+          </a>
+          <a href="http://localhost:5173/app/leaderboard" class="secondary-btn">Delegate Directory</a>
+          <a href="http://localhost:5173/app/analyst" class="secondary-btn">AI Analyst</a>
         </div>
       </section>
 
-      <!-- 3) Stats Footer -->
-      <footer class="stats-footer">
-        <div class="stats-grid">
-          <!-- Stat 1: Inference Time -->
-          <div class="stat-item anim" style="--d: 0.5s">
-            <span class="stat-icon">&lt;</span>
-            <div class="stat-content">
-              <span
-                class="stat-val"
-                data-target="120"
-                data-decimals="0"
-                data-suffix="ms"
-              >0ms</span>
-              <span class="stat-label">Inference Time</span>
-            </div>
-          </div>
-
-          <!-- Stat 2: Platform Uptime -->
-          <div class="stat-item anim" style="--d: 0.58s">
-            <span class="stat-icon">%</span>
-            <div class="stat-content">
-              <span
-                class="stat-val"
-                data-target="99.99"
-                data-decimals="2"
-                data-suffix="%"
-              >0.00%</span>
-              <span class="stat-label">Platform Uptime</span>
-            </div>
-          </div>
-
-          <!-- Stat 3: Autonomous Runtime -->
-          <div class="stat-item anim" style="--d: 0.66s">
-            <span class="stat-icon">*</span>
-            <div class="stat-content">
-              <span
-                class="stat-val"
-                data-target="24"
-                data-decimals="0"
-                data-suffix="/7"
-              >0/7</span>
-              <span class="stat-label">Autonomous Runtime</span>
-            </div>
-          </div>
-
-          <!-- Stat 4: Context Windows -->
-          <div class="stat-item anim" style="--d: 0.74s">
-            <span class="stat-icon">#</span>
-            <div class="stat-content">
-              <span
-                class="stat-val"
-                data-target="2.4"
-                data-decimals="1"
-                data-suffix="M"
-              >0.0M</span>
-              <span class="stat-label">Context Windows</span>
-            </div>
-          </div>
+      <!-- 3) Clean Institutional Telemetry Footer (Old 4-stat line completely removed) -->
+      <footer class="telemetry-footer anim" style="--d: 0.48s">
+        <div class="telemetry-left">
+          <span style="display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: #B6F36B; margin-right: 6px;"></span>
+          <span>TURNOUT PROTOCOL • NEAR TESTNET</span>
+        </div>
+        <div class="telemetry-right">
+          <span>HOUSE OF STAKE EPOCH 14 • veNEAR SNAPSHOTS • NON-CUSTODIAL</span>
         </div>
       </footer>
     </main>
 
-    <!-- Script -->
+    <!-- JavaScript -->
     <script src="main.js"></script>
   </body>
 </html>
-

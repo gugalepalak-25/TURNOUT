@@ -336,12 +336,12 @@ html, body {
   font-family: var(--font-display);
   font-weight: 400;
   color: #ffffff;
-  font-size: clamp(28px, 6.2vw, 80px);
-  letter-spacing: -0.04em;
-  line-height: 1.12;
-  white-space: nowrap;
-  overflow: hidden;
-  text-transform: none;
+  font-size: clamp(26px, 5.2vw, 68px);
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  text-align: center;
+  text-wrap: balance;
+  margin: 0 auto;
 }
 
 .headline-line {
@@ -356,39 +356,82 @@ html, body {
 }
 
 .line-2 {
-  animation-delay: 0.3s;
+  animation-delay: 0.28s;
 }
 
 /* Subhead */
 .subhead {
-  max-width: min(500px, 92%);
-  margin-top: clamp(14px, 2vh, 22px);
+  max-width: min(640px, 92%);
+  margin: clamp(14px, 2vh, 22px) auto 0;
   font-family: var(--font-sans);
-  font-size: clamp(calc(13.5px + 2pt), calc(1.55vw + 2pt), calc(16.5px + 2pt));
+  font-size: clamp(14px, 1.55vw, 16.5px);
   font-weight: 400;
-  color: #d0d0d0;
-  opacity: 0.8;
-  line-height: 1.55;
+  color: #c4c2c3;
+  opacity: 0.9;
+  line-height: 1.6;
+  text-align: center;
 }
 
-/* CTA Button */
+/* Workflow Stage Pills */
+.workflow-pills {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(4px, 1vw, 8px);
+  flex-wrap: wrap;
+  margin: clamp(18px, 2.4vh, 26px) auto 0;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background-color: rgba(40, 40, 42, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(12px);
+}
+
+.stage-pill {
+  font-family: var(--font-display);
+  font-size: clamp(9px, 1vw, 11px);
+  letter-spacing: 0.06em;
+  color: #c4c2c3;
+  padding: 3px 8px;
+  border-radius: 999px;
+  text-transform: uppercase;
+}
+
+.stage-pill.active {
+  color: #ffffff;
+  background-color: rgba(255, 255, 255, 0.15);
+  font-weight: 600;
+}
+
+.stage-arrow {
+  color: #66666a;
+  font-size: 10px;
+}
+
+/* CTA Row */
 .cta-wrap {
-  margin-top: clamp(20px, 2.8vh, 32px);
+  margin: clamp(20px, 3vh, 32px) auto 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
 }
 
 .cta-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  gap: 8px;
   background-color: #ffffff;
   color: #000000;
   font-family: var(--font-sans);
-  font-size: clamp(13.5px, 1.5vw, 14.5px);
+  font-size: clamp(13.5px, 1.4vw, 15px);
   font-weight: 600;
-  padding: clamp(11px, 1.6vh, 13px) clamp(22px, 3vw, 28px);
+  padding: clamp(12px, 1.6vh, 14px) clamp(24px, 3vw, 32px);
   border-radius: 999px;
   text-decoration: none;
-  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.15),
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.2),
               0 0 22px rgba(255, 255, 255, 0.32),
               0 0 44px rgba(255, 255, 255, 0.12);
   transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.25s ease;
@@ -396,58 +439,60 @@ html, body {
 
 .cta-btn:hover {
   transform: translateY(-2px) scale(1.02);
-  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.25),
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.3),
               0 0 28px rgba(255, 255, 255, 0.45),
               0 0 54px rgba(255, 255, 255, 0.2);
 }
 
+.secondary-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background-color: #28282a;
+  color: #ffffff;
+  font-family: var(--font-sans);
+  font-size: clamp(13px, 1.35vw, 14.5px);
+  font-weight: 500;
+  padding: clamp(12px, 1.6vh, 14px) clamp(20px, 2.5vw, 26px);
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  text-decoration: none;
+  transition: background-color 0.25s ease, transform 0.25s ease;
+}
+
+.secondary-btn:hover {
+  background-color: #323234;
+  transform: translateY(-2px);
+}
+
 /* ==========================================================================
-   3) Stats Footer
+   3) Clean Telemetry Footer
    ========================================================================== */
 
-.stats-footer {
+.telemetry-footer {
   width: 100%;
-  max-width: 920px;
+  max-width: 840px;
   flex-shrink: 0;
-  z-index: 5;
-  padding-top: clamp(10px, 1.5vh, 20px);
-}
-
-.stats-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: clamp(16px, 2vw, 28px);
-  align-items: center;
-  width: 100%;
-}
-
-.stat-item {
+  z-index: 10;
+  padding-top: clamp(10px, 1.5vh, 18px);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
   display: flex;
   align-items: center;
-  gap: clamp(8px, 1.2vw, 14px);
+  justify-content: space-between;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: clamp(10px, 1.1vw, 11px);
+  color: #8e8e8e;
+  letter-spacing: 0.04em;
 }
 
-.stat-icon {
-  font-family: var(--font-display);
-  font-size: clamp(22px, 3vw, 33px);
-  color: #ffffff;
-  line-height: 1;
-  flex-shrink: 0;
+.video-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.45) 50%, rgba(0,0,0,0.9) 100%),
+              radial-gradient(circle at center, rgba(0,0,0,0) 0%, rgba(0,0,0,0.75) 100%);
+  pointer-events: none;
 }
-
-.stat-content {
-  display: flex;
-  flex-direction: column;
-}
-
-.stat-val {
-  font-family: var(--font-sans);
-  font-size: clamp(18px, 2.2vw, 26px);
-  font-weight: 600;
-  letter-spacing: -0.025em;
-  color: #ffffff;
-  font-variant-numeric: tabular-nums;
-  line-height: 1.15;
 }
 
 .stat-label {

@@ -25,18 +25,8 @@ export const LandingPage: React.FC = () => {
       <header className="landing-header">
         {/* Circular Logo Button */}
         <Link to="/" className="landing-logo-btn" aria-label="Turnout Home">
-          <img
-            src="/assets/logo.webp"
-            alt=""
-            width="52"
-            height="52"
-            className="landing-logo-img"
-            onError={(e) => {
-              (e.target as HTMLElement).style.display = 'none';
-            }}
-          />
           <svg
-            className="w-[72%] h-[72%] absolute inset-0 m-auto pointer-events-none"
+            className="landing-logo-svg"
             viewBox="0 0 36 36"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"

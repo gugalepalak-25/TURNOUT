@@ -85,14 +85,17 @@
 
 /* Logo Button */
 .landing-logo-btn {
+  position: relative;
   width: clamp(42px, 4.4vw, 48px);
   height: clamp(42px, 4.4vw, 48px);
   border-radius: 50%;
   background-color: #ffffff;
   box-shadow: var(--nav-shadow);
-  display: grid;
-  place-items: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   flex-shrink: 0;
+  overflow: hidden;
   transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1);
   text-decoration: none;
 }
@@ -101,11 +104,11 @@
   transform: scale(1.05);
 }
 
-.landing-logo-img {
-  width: 72%;
-  height: 72%;
-  object-fit: contain;
+.landing-logo-svg {
+  width: 70%;
+  height: 70%;
   display: block;
+  pointer-events: none;
 }
 
 /* Nav Pill (White) */

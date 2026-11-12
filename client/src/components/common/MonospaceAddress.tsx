@@ -34,23 +34,23 @@ export const MonospaceAddress: React.FC<MonospaceAddressProps> = ({
       : `https://testnet.nearblocks.io/txns/${value}`;
 
   return (
-    <span className="inline-flex items-center gap-1.5 font-mono text-xs bg-cr-bgSecondary/60 hover:bg-cr-bgSecondary px-2 py-0.5 rounded border border-cr-border transition-colors group">
-      <span className="text-cr-text font-medium select-all" title={value}>
+    <span className="inline-flex items-center gap-1.5 font-mono text-xs bg-[#28282a]/80 hover:bg-[#323234] px-2.5 py-0.5 rounded-full border border-white/20 transition-all group backdrop-blur-sm">
+      <span className="text-white font-medium select-all" title={value}>
         {display}
       </span>
       <button
         onClick={handleCopy}
-        className="text-cr-muted hover:text-cr-accent transition-colors p-0.5 rounded"
+        className="text-[#8e8e8e] hover:text-white transition-colors p-0.5 rounded-full"
         title="Copy to clipboard"
       >
-        {copied ? <Check className="w-3 h-3 text-cr-accent" /> : <Copy className="w-3 h-3 opacity-60 group-hover:opacity-100" />}
+        {copied ? <Check className="w-3 h-3 text-[#B6F36B]" /> : <Copy className="w-3 h-3 opacity-60 group-hover:opacity-100" />}
       </button>
       {linkToExplorer && (
         <a
           href={explorerUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="text-cr-muted hover:text-cr-secondaryAccent transition-colors p-0.5"
+          className="text-[#8e8e8e] hover:text-[#B6F36B] transition-colors p-0.5"
           title="View on NEAR Explorer"
         >
           <ExternalLink className="w-3 h-3 opacity-60 group-hover:opacity-100" />
@@ -59,4 +59,3 @@ export const MonospaceAddress: React.FC<MonospaceAddressProps> = ({
     </span>
   );
 };
-

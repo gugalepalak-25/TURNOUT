@@ -15,11 +15,11 @@ export const Shell: React.FC = () => {
   });
 
   return (
-    <div className="flex h-screen bg-black text-cr-text overflow-hidden relative">
+    <div className="flex h-screen bg-black text-white overflow-hidden relative">
       {/* Full-viewport cover video behind DApp interface */}
       <div className="fixed inset-0 overflow-hidden bg-black z-0 pointer-events-none">
         <video
-          className="absolute inset-0 w-full h-full object-cover pointer-events-none opacity-30"
+          className="absolute inset-0 w-full h-full object-cover pointer-events-none opacity-25"
           autoPlay
           muted
           loop
@@ -30,7 +30,9 @@ export const Shell: React.FC = () => {
             type="video/mp4"
           />
         </video>
-        <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/50 to-black/90 pointer-events-none" />
+        {/* Cinematic gradient overlays for maximum contrast */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/85 via-black/60 to-black/90 pointer-events-none" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,0,0,0.1)_0%,rgba(0,0,0,0.8)_100%)] pointer-events-none" />
       </div>
 
       {/* Desktop Sidebar */}
@@ -42,7 +44,7 @@ export const Shell: React.FC = () => {
       {mobileMenuOpen && (
         <div className="fixed inset-0 z-50 lg:hidden flex">
           <div
-            className="fixed inset-0 bg-black/60 backdrop-blur-sm"
+            className="fixed inset-0 bg-black/80 backdrop-blur-md"
             onClick={() => setMobileMenuOpen(false)}
           />
           <div className="relative z-10 w-64 max-w-[80vw]">
@@ -67,4 +69,3 @@ export const Shell: React.FC = () => {
     </div>
   );
 };
-

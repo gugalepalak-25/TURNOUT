@@ -8,7 +8,6 @@ import {
   ArrowRight,
   ExternalLink,
   CheckCircle2,
-  RefreshCw,
   Wallet,
 } from 'lucide-react';
 import { useNearWallet } from '../context/NearWalletContext.js';
@@ -97,70 +96,67 @@ export const GuardianPage: React.FC = () => {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="border-b border-cr-border pb-6 flex flex-col md:flex-row md:items-end justify-between gap-4">
+      <div className="border-b border-white/10 pb-6 flex flex-col md:flex-row md:items-end justify-between gap-4">
         <div>
-          <div className="flex items-center gap-2 text-xs font-mono text-cr-accent tracking-widest uppercase mb-1">
-            <ShieldCheck className="w-3.5 h-3.5" />
-            STAKE PROTECTION ENGINE
+          <div className="flex items-center gap-2 text-xs font-mono text-[#8e8e8e] tracking-widest uppercase mb-1">
+            <ShieldCheck className="w-3.5 h-3.5 text-white" />
+            <span>AUTOMATED STAKE PROTECTION</span>
           </div>
-          <h1 className="text-3xl font-heading font-bold text-cr-text tracking-tight">
-            Delegation Guardian
+          <h1 className="text-3xl md:text-4xl font-dotmatrix font-bold text-white tracking-tight">
+            DELEGATION GUARDIAN
           </h1>
-          <p className="text-sm text-cr-muted mt-1 max-w-2xl">
-            Protect your governance influence. Monitor your chosen delegates, receive instant alerts when participation dips below your guarded threshold, and execute 1-click re-delegation via NEAR wallet.
+          <p className="text-sm text-[#8e8e8e] mt-1 max-w-2xl font-sans">
+            Monitor your delegated NEAR stake in real time. Receive instant alerts if a delegate breaches the 80% House of Stake threshold, and execute 1-click re-delegation directly to verified backup candidates.
           </p>
         </div>
 
-        <div className="flex items-center gap-2 text-xs font-mono text-cr-muted bg-cr-surface border border-cr-border px-3 py-1.5 rounded-lg">
-          <Wallet className="w-3.5 h-3.5 text-cr-accent" />
-          <span>Active Guard: {activeAccount}</span>
+        <div className="flex items-center gap-2 text-xs font-mono text-[#c4c2c3] bg-[#28282a] border border-white/20 px-4 py-2 rounded-full shadow-[0_4px_14px_rgba(0,0,0,0.16)]">
+          <Wallet className="w-3.5 h-3.5 text-[#B6F36B]" />
+          <span>Active Delegator: {activeAccount}</span>
         </div>
       </div>
 
-      {/* Switch Receipt Banner */}
+      {/* Re-delegation Success Alert */}
       {switchReceipt && (
-        <div className="p-4 bg-cr-accent/10 border border-cr-accent/40 rounded-lg flex items-center justify-between gap-4 font-mono text-xs">
+        <div className="p-4 rounded-2xl bg-white/10 border border-white/30 text-white flex items-center justify-between shadow-[0_0_22px_rgba(255,255,255,0.2)]">
           <div className="flex items-center gap-3">
-            <CheckCircle2 className="w-5 h-5 text-cr-accent shrink-0" />
+            <CheckCircle2 className="w-5 h-5 text-[#B6F36B]" />
             <div>
-              <span className="font-bold text-cr-accent block">
-                RE-DELEGATION TRANSACTION BROADCAST ON NEAR TESTNET
-              </span>
-              <span className="text-cr-muted">
-                Transaction Hash:{' '}
-                <MonospaceAddress value={switchReceipt.txHash} type="hash" truncate={false} />
-              </span>
+              <div className="font-heading font-bold text-sm">Delegation Successfully Reassigned on NEAR Testnet</div>
+              <div className="text-xs text-[#8e8e8e] font-mono">
+                Transaction Hash: {switchReceipt.txHash}
+              </div>
             </div>
           </div>
           <a
             href={switchReceipt.explorerUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="px-3 py-1.5 rounded bg-cr-accent text-cr-bg font-bold hover:bg-cr-accentHover transition-colors flex items-center gap-1 shrink-0"
+            className="px-4 py-1.5 rounded-full bg-white text-black text-xs font-sans font-semibold hover:bg-neutral-100 flex items-center gap-1.5"
           >
             <span>View Receipt</span>
-            <ExternalLink className="w-3.5 h-3.5" />
+            <ExternalLink className="w-3 h-3" />
           </a>
         </div>
       )}
 
-      {/* Add Delegate Watchlist Form */}
+      {/* Add to Watchlist Form */}
       <TerminalBox
-        title="Add Delegate to Guarded Watchlist"
-        tag="Threshold Automation"
+        title="Add Delegate to Protection Watchlist"
+        tag="Config"
       >
         <form onSubmit={handleAdd} className="grid grid-cols-1 sm:grid-cols-4 gap-4">
           <div>
-            <label className="block text-xs font-mono uppercase text-cr-muted mb-1.5">
-              Select Watched Delegate:
+            <label className="block text-xs font-mono uppercase text-[#8e8e8e] mb-2">
+              Select Monitored Delegate:
             </label>
             <select
               value={selectedDelegate}
               onChange={(e) => setSelectedDelegate(e.target.value)}
-              className="w-full bg-cr-bg font-mono text-xs text-cr-text px-3 py-2 rounded border border-cr-border focus:border-cr-accent focus:outline-none"
+              className="w-full bg-black font-mono text-xs text-white px-4 py-2.5 rounded-full border border-white/20 focus:border-white focus:outline-none"
             >
               <option value="">-- Choose Delegate --</option>
-              {delegates?.map((d) => (
+              {(delegates || []).map((d) => (
                 <option key={d.accountId} value={d.accountId}>
                   {d.name} ({d.accountId})
                 </option>
@@ -169,34 +165,36 @@ export const GuardianPage: React.FC = () => {
           </div>
 
           <div>
-            <label className="block text-xs font-mono uppercase text-cr-muted mb-1.5">
-              Alert Threshold (Participation %):
+            <label className="block text-xs font-mono uppercase text-[#8e8e8e] mb-2">
+              Alert Threshold (Min %):
             </label>
             <input
               type="number"
               min="50"
-              max="100"
+              max="95"
               value={threshold}
               onChange={(e) => setThreshold(Number(e.target.value))}
-              className="w-full bg-cr-bg font-mono text-xs text-cr-text px-3 py-2 rounded border border-cr-border focus:border-cr-accent focus:outline-none"
+              className="w-full bg-black font-mono text-xs text-white px-4 py-2.5 rounded-full border border-white/20 focus:border-white focus:outline-none"
             />
           </div>
 
           <div>
-            <label className="block text-xs font-mono uppercase text-cr-muted mb-1.5">
-              Backup Delegate Target:
+            <label className="block text-xs font-mono uppercase text-[#8e8e8e] mb-2">
+              Designate Backup Delegate:
             </label>
             <select
               value={selectedBackup}
               onChange={(e) => setSelectedBackup(e.target.value)}
-              className="w-full bg-cr-bg font-mono text-xs text-cr-text px-3 py-2 rounded border border-cr-border focus:border-cr-accent focus:outline-none"
+              className="w-full bg-black font-mono text-xs text-white px-4 py-2.5 rounded-full border border-white/20 focus:border-white focus:outline-none"
             >
-              <option value="">-- Automatic Highest Ranked --</option>
-              {delegates?.map((d) => (
-                <option key={d.accountId} value={d.accountId}>
-                  {d.name} (Grade {d.performanceGrade})
-                </option>
-              ))}
+              <option value="">-- Choose Backup (Optional) --</option>
+              {(delegates || [])
+                .filter((d) => d.accountId !== selectedDelegate)
+                .map((d) => (
+                  <option key={d.accountId} value={d.accountId}>
+                    {d.name} (Grade {d.performanceGrade} • {d.participationRate}%)
+                  </option>
+                ))}
             </select>
           </div>
 
@@ -204,122 +202,129 @@ export const GuardianPage: React.FC = () => {
             <button
               type="submit"
               disabled={!selectedDelegate || addMutation.isPending}
-              className="w-full py-2 px-4 rounded bg-cr-accent text-cr-bg font-mono text-xs font-bold hover:bg-cr-accentHover transition-colors flex items-center justify-center gap-2 disabled:opacity-40"
+              className="w-full py-2.5 rounded-full bg-white text-black font-sans text-xs font-semibold hover:bg-neutral-100 hover:shadow-[0_0_22px_rgba(255,255,255,0.32)] transition-all flex items-center justify-center gap-2 disabled:opacity-40"
             >
-              <Plus className="w-3.5 h-3.5" />
-              <span>Guard Delegate</span>
+              <Plus className="w-4 h-4" />
+              <span>{addMutation.isPending ? 'Arming...' : 'Arm Guardian'}</span>
             </button>
           </div>
         </form>
       </TerminalBox>
 
-      {/* Watchlist Cards */}
-      <div className="space-y-4">
-        <h3 className="font-heading font-bold text-lg text-cr-text">
-          Active Watchlist ({watchlist?.length || 0})
-        </h3>
-
+      {/* Monitored Watchlist Cards */}
+      <TerminalBox
+        title="Active Monitored Delegations"
+        tag={`${watchlist?.length || 0} Delegates Guarded`}
+      >
         {isLoading ? (
-          <div className="py-12 text-center text-cr-muted font-mono text-xs">
-            LOADING GUARDED WATCHLIST TELEMETRY...
+          <div className="py-12 text-center text-[#8e8e8e] font-mono text-xs">
+            CHECKING DELEGATION INTEGRITY ON NEAR LEDGER...
           </div>
         ) : !watchlist || watchlist.length === 0 ? (
-          <div className="py-12 bg-cr-surface border border-cr-border rounded-lg text-center text-cr-muted font-mono text-xs">
-            NO DELEGATES CURRENTLY UNDER GUARDIAN WATCH
+          <div className="py-12 text-center text-[#8e8e8e] font-mono text-xs">
+            NO DELEGATES CURRENTLY IN YOUR PROTECTION WATCHLIST
           </div>
         ) : (
-          watchlist.map((entry) => (
-            <div
-              key={entry.delegateAccountId}
-              className={`bg-cr-surface border rounded-lg p-5 transition-all ${
-                entry.alertActive
-                  ? 'border-cr-warning/60 bg-cr-warning/5'
-                  : 'border-cr-border'
-              }`}
-            >
-              <div className="flex flex-col md:flex-row md:items-start justify-between gap-4">
-                <div>
-                  <div className="flex items-center gap-3 mb-1">
-                    <h4 className="font-heading font-bold text-base text-cr-text">
-                      {entry.delegateName}
-                    </h4>
-                    <GradeBadge grade={entry.currentGrade as any} size="sm" />
-                    {entry.alertActive ? (
-                      <span className="inline-flex items-center gap-1 text-[11px] font-mono text-cr-warning bg-cr-warning/10 px-2 py-0.5 rounded border border-cr-warning/40 font-semibold">
-                        <AlertTriangle className="w-3 h-3" />
-                        Threshold Breached
-                      </span>
-                    ) : (
-                      <span className="inline-flex items-center gap-1 text-[11px] font-mono text-cr-accent bg-cr-accent/10 px-2 py-0.5 rounded border border-cr-accent/30 font-semibold">
-                        <CheckCircle2 className="w-3 h-3" />
-                        Guarded & Compliant
-                      </span>
-                    )}
+          <div className="space-y-4">
+            {watchlist.map((entry) => {
+              const isBreached = entry.currentParticipationRate < entry.minParticipationThreshold;
+
+              return (
+                <div
+                  key={entry.delegateAccountId}
+                  className={`p-5 rounded-2xl border transition-all ${
+                    isBreached
+                      ? 'bg-[#18181a] border-[#E87979]/40 shadow-[0_0_15px_rgba(232,121,121,0.15)]'
+                      : 'bg-[#18181a]/70 border-white/10'
+                  }`}
+                >
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-full bg-white text-black flex items-center justify-center font-dotmatrix font-bold text-base shrink-0">
+                        {entry.delegateName?.[0] || 'D'}
+                      </div>
+                      <div>
+                        <div className="font-heading font-bold text-base text-white">
+                          {entry.delegateName}
+                        </div>
+                        <div className="text-xs text-[#8e8e8e] font-mono">
+                          {entry.delegateAccountId}
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center gap-3">
+                      <GradeBadge grade={entry.currentGrade as any} size="sm" />
+                      <button
+                        onClick={() => removeMutation.mutate({ delegate: entry.delegateAccountId })}
+                        className="text-[#8e8e8e] hover:text-[#E87979] p-2 rounded-full hover:bg-white/5 transition-colors"
+                        title="Remove from watchlist"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
+                    </div>
                   </div>
 
-                  <div className="font-mono text-xs text-cr-muted mb-2">
-                    <MonospaceAddress value={entry.delegateAccountId} type="account" truncate={false} />
-                  </div>
-
-                  {entry.alertActive && entry.alertMessage && (
-                    <p className="text-xs text-cr-warning font-sans leading-relaxed mb-3 bg-cr-warning/10 p-2.5 rounded border border-cr-warning/20">
-                      {entry.alertMessage}
-                    </p>
-                  )}
-
-                  <div className="flex flex-wrap items-center gap-4 text-xs font-mono text-cr-muted">
-                    <span>
-                      Participation:{' '}
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-3 border-t border-white/10 font-mono text-xs">
+                    <div>
+                      <span className="text-[#8e8e8e] uppercase block text-[10px]">Current Participation</span>
                       <span
-                        className={
-                          entry.currentParticipationRate >= entry.minParticipationThreshold
-                            ? 'text-cr-accent font-bold'
-                            : 'text-cr-warning font-bold'
-                        }
+                        className={`font-dotmatrix text-lg font-bold ${
+                          isBreached ? 'text-[#E87979]' : 'text-white'
+                        }`}
                       >
                         {entry.currentParticipationRate}%
                       </span>
-                    </span>
-                    <span>•</span>
-                    <span>
-                      Alert Target: <span className="text-cr-text font-bold">&lt; {entry.minParticipationThreshold}%</span>
-                    </span>
-                    <span>•</span>
-                    <span>
-                      Backup Delegate:{' '}
-                      <span className="text-cr-secondaryAccent font-semibold">
-                        {entry.backupDelegateName || entry.backupDelegateAccountId || 'None Selected'}
+                    </div>
+
+                    <div>
+                      <span className="text-[#8e8e8e] uppercase block text-[10px]">Monitored Threshold</span>
+                      <span className="font-dotmatrix text-lg font-bold text-white">
+                        ≥ {entry.minParticipationThreshold}%
                       </span>
-                    </span>
+                    </div>
+
+                    <div>
+                      <span className="text-[#8e8e8e] uppercase block text-[10px]">Health Status</span>
+                      {isBreached ? (
+                        <span className="inline-flex items-center gap-1.5 text-[11px] text-[#E87979] font-bold">
+                          <AlertTriangle className="w-3.5 h-3.5" />
+                          Charter Breach Detected
+                        </span>
+                      ) : (
+                        <span className="inline-flex items-center gap-1.5 text-[11px] text-white">
+                          <CheckCircle2 className="w-3.5 h-3.5 text-[#B6F36B]" />
+                          Healthy & Diligent
+                        </span>
+                      )}
+                    </div>
                   </div>
-                </div>
 
-                <div className="flex items-center gap-2 self-start shrink-0">
-                  {entry.alertActive && (
-                    <button
-                      onClick={() => handleExecuteSwitch(entry)}
-                      disabled={isSwitching}
-                      className="px-3.5 py-2 rounded bg-cr-warning text-cr-bg font-mono text-xs font-bold hover:bg-yellow-400 transition-colors flex items-center gap-1.5 shadow-sm"
-                    >
-                      <span>Re-Delegate Stake</span>
-                      <ArrowRight className="w-3.5 h-3.5" />
-                    </button>
+                  {/* 1-Click Re-delegation Action if in breach */}
+                  {isBreached && (
+                    <div className="mt-4 pt-4 border-t border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                      <div className="text-xs text-[#8e8e8e] font-sans">
+                        Re-delegate to verified alternative:{' '}
+                        <span className="text-white font-mono font-semibold">
+                          {entry.backupDelegateAccountId || entry.recommendedAlternatives?.[0]?.accountId || 'stakewithus.near'}
+                        </span>
+                      </div>
+                      <button
+                        onClick={() => handleExecuteSwitch(entry)}
+                        disabled={isSwitching}
+                        className="px-5 py-2 rounded-full bg-white text-black font-sans font-bold text-xs hover:bg-neutral-100 hover:shadow-[0_0_22px_rgba(255,255,255,0.32)] transition-all flex items-center justify-center gap-2"
+                      >
+                        <span>{isSwitching ? 'Signing on NEAR...' : '1-Click Re-delegate'}</span>
+                        <ArrowRight className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
                   )}
-
-                  <button
-                    onClick={() => removeMutation.mutate({ delegate: entry.delegateAccountId })}
-                    className="p-2 rounded bg-cr-bgSecondary border border-cr-border text-cr-muted hover:text-cr-critical transition-colors"
-                    title="Remove from watchlist"
-                  >
-                    <Trash2 className="w-4 h-4" />
-                  </button>
                 </div>
-              </div>
-            </div>
-          ))
+              );
+            })}
+          </div>
         )}
-      </div>
+      </TerminalBox>
     </div>
   );
 };
-

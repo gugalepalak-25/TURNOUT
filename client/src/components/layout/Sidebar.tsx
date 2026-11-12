@@ -34,19 +34,19 @@ export const Sidebar: React.FC<SidebarProps> = ({ onCloseMobile }) => {
   ];
 
   return (
-    <aside className="w-64 h-screen bg-cr-bgSecondary border-r border-cr-border flex flex-col justify-between select-none">
+    <aside className="w-64 h-screen bg-black/60 backdrop-blur-2xl border-r border-white/10 flex flex-col justify-between select-none">
       {/* Brand Header */}
       <div>
-        <div className="p-5 border-b border-cr-border">
+        <div className="p-5 border-b border-white/10">
           <Logo />
         </div>
 
         {/* Navigation list */}
         <div className="py-4 px-3">
-          <div className="text-[10px] font-mono uppercase tracking-widest text-cr-muted px-3 mb-2">
-            CONTROL ROOM
+          <div className="text-[10px] font-dotmatrix uppercase tracking-widest text-[#8e8e8e] px-3 mb-2.5">
+            NAVIGATION PILLS
           </div>
-          <nav className="space-y-1">
+          <nav className="space-y-1.5">
             {navItems.map((item) => {
               const Icon = item.icon;
               return (
@@ -55,29 +55,31 @@ export const Sidebar: React.FC<SidebarProps> = ({ onCloseMobile }) => {
                   to={item.to}
                   onClick={onCloseMobile}
                   className={({ isActive }) =>
-                    `flex items-center justify-between px-3 py-2 rounded-md text-xs font-medium transition-all ${
+                    `flex items-center justify-between px-3.5 py-2.5 rounded-full text-xs font-medium transition-all ${
                       isActive
-                        ? 'bg-cr-surface text-cr-accent border-l-2 border-cr-accent font-semibold shadow-sm'
-                        : 'text-cr-text hover:bg-cr-surface/60 hover:text-white'
+                        ? 'bg-white text-black font-semibold shadow-[0_4px_14px_rgba(0,0,0,0.2)]'
+                        : 'text-[#c8c8c8] hover:bg-[#28282a] hover:text-white'
                     }`
                   }
                 >
-                  <div className="flex items-center gap-3">
-                    <Icon className="w-4 h-4 opacity-80" />
-                    <span>{item.label}</span>
-                  </div>
-                  {item.badge && (
-                    <span
-                      className={`text-[9px] font-mono px-1.5 py-0.2 rounded border ${
-                        item.badge === 'Core'
-                          ? 'bg-cr-accent/10 text-cr-accent border-cr-accent/30'
-                          : item.badge === 'AI'
-                          ? 'bg-cr-secondaryAccent/10 text-cr-secondaryAccent border-cr-secondaryAccent/30'
-                          : 'bg-cr-bg text-cr-muted border-cr-border'
-                      }`}
-                    >
-                      {item.badge}
-                    </span>
+                  {({ isActive }) => (
+                    <>
+                      <div className="flex items-center gap-3">
+                        <Icon className={`w-4 h-4 ${isActive ? 'text-black' : 'text-[#8e8e8e]'}`} />
+                        <span>{item.label}</span>
+                      </div>
+                      {item.badge && (
+                        <span
+                          className={`text-[9px] font-mono px-2 py-0.5 rounded-full border ${
+                            isActive
+                              ? 'bg-black text-white border-black'
+                              : 'bg-[#28282a] text-[#c4c2c3] border-white/20'
+                          }`}
+                        >
+                          {item.badge}
+                        </span>
+                      )}
+                    </>
                   )}
                 </NavLink>
               );
@@ -87,22 +89,21 @@ export const Sidebar: React.FC<SidebarProps> = ({ onCloseMobile }) => {
       </div>
 
       {/* Protocol Telemetry & Footer */}
-      <div className="p-4 border-t border-cr-border bg-cr-bg/50">
-        <div className="flex items-center justify-between text-xs font-mono text-cr-muted mb-2">
-          <span className="flex items-center gap-1.5">
-            <Radio className="w-3 h-3 text-cr-accent animate-pulse-subtle" />
+      <div className="p-4 border-t border-white/10 bg-[#121214]/60 backdrop-blur-md">
+        <div className="flex items-center justify-between text-xs font-mono text-[#8e8e8e] mb-2">
+          <span className="flex items-center gap-1.5 text-white">
+            <Radio className="w-3 h-3 text-[#B6F36B] animate-pulse-subtle" />
             NEAR TESTNET
           </span>
-          <span className="text-[10px] text-cr-secondaryAccent bg-cr-surface px-1.5 py-0.5 rounded border border-cr-border">
+          <span className="text-[10px] text-[#c4c2c3] bg-[#28282a] px-2 py-0.5 rounded-full border border-white/20">
             HOS EPOCH 14
           </span>
         </div>
 
-        <p className="text-[10px] leading-relaxed text-cr-muted/80">
-          Turnout complements NEAR governance; independent accountability layer not officially endorsed by NEAR Foundation.
+        <p className="text-[10px] leading-relaxed text-[#8e8e8e]">
+          Turnout governance accountability layer. Verifiable scorecards and performance monitoring.
         </p>
       </div>
     </aside>
   );
 };
-

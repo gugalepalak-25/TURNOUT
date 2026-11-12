@@ -12,20 +12,38 @@
 
 @layer base {
   :root {
-    --bg-primary: #101713;
-    --bg-secondary: #17221C;
-    --surface: #1C2922;
+    --bg: #000000;
+    --text: #ffffff;
+    --muted: #8e8e8e;
+    --nav-text: #2e2e2e;
+    --pill-dark: #28282a;
+    --sign-in-text: #c8c8c8;
+    --nav-shadow: 0 4px 14px rgba(0, 0, 0, 0.16);
+    --trust-bg: #28282a;
+    --trust-border: rgba(255, 255, 255, 0.4);
+    --trust-text: #c4c2c3;
+    --font-sans: "Inter", "Segoe UI", system-ui, sans-serif;
+    --font-display: "BubbledotICG-FinePos", "Geist Pixel Circle", monospace;
+
+    /* Theme Tokens */
+    --bg-primary: #000000;
+    --bg-secondary: #121214;
+    --surface: rgba(24, 24, 27, 0.75);
+    --surface-solid: #18181a;
+    --surface-hover: rgba(38, 38, 42, 0.85);
     --accent: #B6F36B;
-    --accent-secondary: #66CDAA;
-    --text-main: #E8F0E8;
-    --text-muted: #89988C;
-    --border: #304238;
+    --accent-secondary: #c4c2c3;
+    --text-main: #ffffff;
+    --text-muted: #8e8e8e;
+    --border: rgba(255, 255, 255, 0.12);
+    --border-light: rgba(255, 255, 255, 0.25);
   }
 
   body {
-    background-color: #101713;
-    color: #E8F0E8;
-    font-family: 'Inter', sans-serif;
+    background-color: #000000;
+    color: #ffffff;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    overflow-x: hidden;
   }
 
   h1, h2, h3, h4, h5, h6 {
@@ -33,26 +51,56 @@
     letter-spacing: -0.02em;
   }
 
-  /* Custom Control Room Scrollbars */
+  /* Custom Sleek Monochrome Scrollbars */
   ::-webkit-scrollbar {
     width: 6px;
     height: 6px;
   }
   ::-webkit-scrollbar-track {
-    background: #101713;
+    background: #000000;
   }
   ::-webkit-scrollbar-thumb {
-    background: #304238;
-    border-radius: 3px;
+    background: #28282a;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
   }
   ::-webkit-scrollbar-thumb:hover {
-    background: #66CDAA;
+    background: #3e3e42;
   }
 }
 
+/* Subtle dot/grid background */
 .terminal-grid {
-  background-image: linear-gradient(to right, #17221C 1px, transparent 1px),
-                    linear-gradient(to bottom, #17221C 1px, transparent 1px);
+  background-image: radial-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px);
   background-size: 24px 24px;
 }
 
+/* Three active indicator dots for active pills */
+.nav-active-dots::after {
+  content: "";
+  display: block;
+  position: absolute;
+  bottom: 5px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background-color: #000000;
+  box-shadow: -5px 0 0 #000000, 5px 0 0 #000000;
+}
+
+/* Retro Dot Matrix Display Font Utility */
+.font-dotmatrix {
+  font-family: "BubbledotICG-FinePos", "Geist Pixel Circle", monospace;
+  letter-spacing: 0.03em;
+}
+
+/* Soft white glow helper */
+.shadow-white-glow {
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.2), 0 0 22px rgba(255, 255, 255, 0.32);
+}
+
+.shadow-white-soft {
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.16);
+}

@@ -139,3 +139,4 @@
     statElements.forEach((el, i) => animateStat(el, i));
   }
 })();
+

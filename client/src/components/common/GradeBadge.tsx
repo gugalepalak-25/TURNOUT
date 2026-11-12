@@ -17,15 +17,15 @@ export const GradeBadge: React.FC<GradeBadgeProps> = ({
     { bg: string; text: string; border: string; label: string }
   > = {
     A: {
-      bg: 'bg-[#B6F36B]/10',
-      text: 'text-[#B6F36B]',
-      border: 'border-[#B6F36B]/40',
+      bg: 'bg-white/10',
+      text: 'text-white',
+      border: 'border-white/40 shadow-[0_0_12px_rgba(255,255,255,0.25)]',
       label: 'Exemplary',
     },
     B: {
-      bg: 'bg-[#66CDAA]/10',
-      text: 'text-[#66CDAA]',
-      border: 'border-[#66CDAA]/40',
+      bg: 'bg-[#B6F36B]/10',
+      text: 'text-[#B6F36B]',
+      border: 'border-[#B6F36B]/40',
       label: 'Commendable',
     },
     C: {
@@ -51,24 +51,23 @@ export const GradeBadge: React.FC<GradeBadgeProps> = ({
   const current = gradeStyles[grade] || gradeStyles.F;
 
   const sizeClasses = {
-    sm: 'text-xs px-1.5 py-0.5 font-bold',
-    md: 'text-sm px-2.5 py-1 font-bold',
-    lg: 'text-lg px-3.5 py-1.5 font-extrabold',
+    sm: 'text-xs px-2 py-0.5 font-bold',
+    md: 'text-sm px-3 py-1 font-bold',
+    lg: 'text-lg px-4 py-1.5 font-extrabold',
   }[size];
 
   return (
-    <div className="inline-flex items-center gap-1.5 font-mono">
+    <div className="inline-flex items-center gap-2">
       <span
-        className={`inline-flex items-center justify-center rounded border ${current.bg} ${current.text} ${current.border} ${sizeClasses}`}
+        className={`inline-flex items-center justify-center rounded-full border ${current.bg} ${current.text} ${current.border} ${sizeClasses} font-dotmatrix`}
       >
         {grade}
       </span>
       {showLabel && (
-        <span className="text-xs text-cr-muted uppercase tracking-wider font-sans font-medium">
+        <span className="text-xs text-[#8e8e8e] uppercase tracking-wider font-sans font-medium">
           {current.label}
         </span>
       )}
     </div>
   );
 };
-

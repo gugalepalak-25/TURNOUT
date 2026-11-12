@@ -9,7 +9,6 @@ import {
   Calculator,
   FileCode,
   ArrowRight,
-  ExternalLink,
 } from 'lucide-react';
 import { fetchRewards, calculateCustomRewardPool } from '../services/api.js';
 import { TerminalBox } from '../components/common/TerminalBox.js';
@@ -51,23 +50,23 @@ export const RewardsPage: React.FC = () => {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="border-b border-cr-border pb-6 flex flex-col md:flex-row md:items-end justify-between gap-4">
+      <div className="border-b border-white/10 pb-6 flex flex-col md:flex-row md:items-end justify-between gap-4">
         <div>
-          <div className="flex items-center gap-2 text-xs font-mono text-cr-accent tracking-widest uppercase mb-1">
-            <Gift className="w-3.5 h-3.5" />
-            PERFORMANCE-BASED REWARD DISTRIBUTION
+          <div className="flex items-center gap-2 text-xs font-mono text-[#8e8e8e] tracking-widest uppercase mb-1">
+            <Gift className="w-3.5 h-3.5 text-white" />
+            <span>PERFORMANCE-BASED REWARD DISTRIBUTION</span>
           </div>
-          <h1 className="text-3xl font-heading font-bold text-cr-text tracking-tight">
-            Governance Reward Manager
+          <h1 className="text-3xl md:text-4xl font-dotmatrix font-bold text-white tracking-tight">
+            GOVERNANCE REWARD MANAGER
           </h1>
-          <p className="text-sm text-cr-muted mt-1 max-w-2xl">
+          <p className="text-sm text-[#8e8e8e] mt-1 max-w-2xl font-sans">
             Incentivize diligent governance through performance-weighted payouts. Rewards are allocated strictly based on verified scorecards and require formal DAO multi-sig approval.
           </p>
         </div>
 
-        <div className="flex items-center gap-2 text-xs font-mono text-cr-muted bg-cr-surface border border-cr-border px-3 py-1.5 rounded-lg">
-          <ShieldCheck className="w-3.5 h-3.5 text-cr-accent" />
-          <span>Non-Custodial DAO Proposal Pipeline</span>
+        <div className="flex items-center gap-2 text-xs font-mono text-[#c4c2c3] bg-[#28282a] border border-white/20 px-4 py-2 rounded-full shadow-[0_4px_14px_rgba(0,0,0,0.16)]">
+          <ShieldCheck className="w-3.5 h-3.5 text-[#B6F36B]" />
+          <span>Non-Custodial DAO Pipeline</span>
         </div>
       </div>
 
@@ -78,7 +77,7 @@ export const RewardsPage: React.FC = () => {
       >
         <form onSubmit={handleRecalculate} className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
           <div>
-            <label className="block text-xs font-mono uppercase text-cr-muted mb-1.5">
+            <label className="block text-xs font-mono uppercase text-[#8e8e8e] mb-2">
               Total Pool Amount (NEAR):
             </label>
             <input
@@ -87,12 +86,12 @@ export const RewardsPage: React.FC = () => {
               step="1000"
               value={rewardAmount}
               onChange={(e) => setRewardAmount(Number(e.target.value))}
-              className="w-full bg-cr-bg font-mono text-xs text-cr-text px-3 py-2 rounded border border-cr-border focus:border-cr-accent focus:outline-none"
+              className="w-full bg-black font-mono text-xs text-white px-4 py-2.5 rounded-full border border-white/20 focus:border-white focus:outline-none"
             />
           </div>
 
           <div>
-            <label className="block text-xs font-mono uppercase text-cr-muted mb-1.5">
+            <label className="block text-xs font-mono uppercase text-[#8e8e8e] mb-2">
               Minimum Reputation Score (0-100):
             </label>
             <input
@@ -101,7 +100,7 @@ export const RewardsPage: React.FC = () => {
               max="100"
               value={minScore}
               onChange={(e) => setMinScore(Number(e.target.value))}
-              className="w-full bg-cr-bg font-mono text-xs text-cr-text px-3 py-2 rounded border border-cr-border focus:border-cr-accent focus:outline-none"
+              className="w-full bg-black font-mono text-xs text-white px-4 py-2.5 rounded-full border border-white/20 focus:border-white focus:outline-none"
             />
           </div>
 
@@ -109,50 +108,83 @@ export const RewardsPage: React.FC = () => {
             <button
               type="submit"
               disabled={isCalculating}
-              className="w-full py-2 px-4 rounded bg-cr-accent text-cr-bg font-mono text-xs font-bold hover:bg-cr-accentHover transition-colors flex items-center justify-center gap-2 disabled:opacity-40"
+              className="w-full py-2.5 rounded-full bg-white text-black font-sans text-xs font-semibold hover:bg-neutral-100 hover:shadow-[0_0_22px_rgba(255,255,255,0.32)] transition-all flex items-center justify-center gap-2"
             >
-              <Calculator className="w-3.5 h-3.5" />
-              <span>{isCalculating ? 'Computing Shares...' : 'Simulate Distribution'}</span>
+              <Calculator className="w-4 h-4" />
+              <span>{isCalculating ? 'Computing...' : 'Recalculate Distribution'}</span>
             </button>
           </div>
         </form>
 
-        <div className="p-3 bg-cr-bgSecondary/60 rounded border border-cr-border text-xs font-mono text-cr-muted flex flex-wrap items-center justify-between gap-4">
-          <div>
-            Eligibility Rule:{' '}
-            <span className="text-cr-text font-bold">Reputation Score ≥ {minScore}</span> AND{' '}
-            <span className="text-cr-accent font-bold">HoS Participation ≥ 80.0%</span>
+        {activeDistribution && (
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-4 border-t border-white/10 font-mono text-xs">
+            <div className="bg-[#121214] p-4 rounded-xl border border-white/10">
+              <span className="text-[#8e8e8e] uppercase block text-[10px]">Eligible Delegates</span>
+              <span className="font-dotmatrix text-2xl font-bold text-white">
+                {activeDistribution.eligibleDelegatesCount} / {activeDistribution.totalDelegatesEvaluated}
+              </span>
+            </div>
+            <div className="bg-[#121214] p-4 rounded-xl border border-white/10">
+              <span className="text-[#8e8e8e] uppercase block text-[10px]">Total Allocated</span>
+              <span className="font-dotmatrix text-2xl font-bold text-white">
+                {activeDistribution.totalDistributedAmount?.toLocaleString()} {activeDistribution.tokenSymbol}
+              </span>
+            </div>
+            <div className="bg-[#121214] p-4 rounded-xl border border-white/10">
+              <span className="text-[#8e8e8e] uppercase block text-[10px]">Status</span>
+              <span className="font-dotmatrix text-2xl font-bold text-[#c4c2c3]">
+                {activeDistribution.status}
+              </span>
+            </div>
           </div>
-          <div>
-            DAO Treasury Safeguard:{' '}
-            <span className="text-cr-secondaryAccent">Requires DAO On-Chain Approval</span>
-          </div>
-        </div>
+        )}
       </TerminalBox>
 
-      {/* Allocation Breakdown Table */}
+      {/* Allocated Delegate Rewards Table */}
       {activeDistribution && (
         <TerminalBox
-          title={`Epoch Allocations: ${activeDistribution.poolName}`}
-          tag={`${activeDistribution.totalEligibleDelegates} Eligible | ${activeDistribution.totalRewardAmount.toLocaleString()} ${activeDistribution.tokenSymbol}`}
+          title="Calculated Reward Allocation Matrix"
+          tag={`Epoch: ${activeDistribution.period}`}
           action={
             <button
               onClick={() => setShowProposalJson(!showProposalJson)}
-              className="text-xs font-mono text-cr-accent hover:underline flex items-center gap-1.5"
+              className="text-xs font-mono text-white hover:underline flex items-center gap-1.5 bg-[#28282a] border border-white/20 px-3 py-1 rounded-full"
             >
               <FileCode className="w-3.5 h-3.5" />
-              <span>{showProposalJson ? 'Hide DAO Proposal' : 'View Generated Proposal'}</span>
+              <span>{showProposalJson ? 'Hide DAO Payload' : 'Export Sputnik DAO Call'}</span>
             </button>
           }
         >
           {showProposalJson && (
-            <div className="mb-5 bg-cr-bg border border-cr-border rounded p-4 font-mono text-xs overflow-x-auto">
-              <div className="flex items-center justify-between text-cr-muted text-[11px] mb-2 border-b border-cr-border/40 pb-1">
-                <span>ON-CHAIN PROPOSAL PAYLOAD (READY FOR DAO SUBMISSION):</span>
-                <span className="text-cr-accent">Target: turnout-rewards.testnet</span>
+            <div className="mb-4 p-4 rounded-xl bg-black border border-white/20 font-mono text-xs text-white overflow-x-auto">
+              <div className="text-[10px] text-[#8e8e8e] uppercase mb-2">
+                Generated Sputnik DAO Proposal JSON (Non-Custodial Batch Transfer):
               </div>
-              <pre className="text-cr-text text-[11px]">
-                {JSON.stringify(activeDistribution.generatedProposal, null, 2)}
+              <pre className="text-[11px] leading-relaxed text-[#B6F36B]">
+                {JSON.stringify(
+                  {
+                    description: `Turnout Automated Reward Distribution for ${activeDistribution.period}`,
+                    kind: {
+                      FunctionCall: {
+                        receiver_id: 'rewards.hos.testnet',
+                        actions: activeDistribution.items.map((it: any) => ({
+                          method_name: 'distribute_reward',
+                          args: Buffer.from(
+                            JSON.stringify({
+                              delegate_id: it.delegateAccountId,
+                              amount: it.allocatedAmount,
+                              score: it.reputationScore,
+                            })
+                          ).toString('base64'),
+                          deposit: '0',
+                          gas: '30000000000000',
+                        })),
+                      },
+                    },
+                  },
+                  null,
+                  2
+                )}
               </pre>
             </div>
           )}
@@ -160,62 +192,49 @@ export const RewardsPage: React.FC = () => {
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs font-mono">
               <thead>
-                <tr className="border-b border-cr-border text-cr-muted uppercase tracking-wider text-[10px]">
+                <tr className="border-b border-white/10 text-[#8e8e8e] uppercase tracking-wider text-[10px]">
                   <th className="py-2.5 px-3">Delegate</th>
                   <th className="py-2.5 px-3 text-center">Grade</th>
                   <th className="py-2.5 px-3 text-right">Reputation Score</th>
                   <th className="py-2.5 px-3 text-right">Participation</th>
-                  <th className="py-2.5 px-3 text-center">Status</th>
-                  <th className="py-2.5 px-3 text-right">Pool Share</th>
                   <th className="py-2.5 px-3 text-right">Allocated Reward</th>
+                  <th className="py-2.5 px-3 text-center">Eligibility</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-cr-border/40">
-                {activeDistribution.allocations.map((alloc: any) => (
-                  <tr
-                    key={alloc.delegateAccountId}
-                    className={`hover:bg-cr-surfaceHover/50 transition-colors ${
-                      !alloc.eligible ? 'opacity-50' : ''
-                    }`}
-                  >
+              <tbody className="divide-y divide-white/5">
+                {activeDistribution.items.map((item: any) => (
+                  <tr key={item.delegateAccountId} className="hover:bg-white/5 transition-colors">
                     <td className="py-3 px-3">
-                      <span className="font-sans font-medium text-cr-text block">
-                        {alloc.name}
+                      <span className="font-medium text-white block">
+                        {item.delegateName || item.delegateAccountId}
                       </span>
-                      <span className="text-[10px] text-cr-muted">
-                        {alloc.delegateAccountId}
-                      </span>
+                      <span className="text-[10px] text-[#8e8e8e]">{item.delegateAccountId}</span>
                     </td>
                     <td className="py-3 px-3 text-center">
-                      <GradeBadge grade={alloc.grade} size="sm" />
+                      <GradeBadge grade={item.performanceGrade} size="sm" />
                     </td>
-                    <td className="py-3 px-3 text-right font-bold text-cr-text">
-                      {alloc.score}
+                    <td className="py-3 px-3 text-right font-bold text-white">
+                      <span className="font-dotmatrix text-base">{item.reputationScore}</span>
+                      <span className="text-[#8e8e8e] text-[10px]"> /100</span>
                     </td>
-                    <td className="py-3 px-3 text-right">
-                      {alloc.participationRate}%
+                    <td className="py-3 px-3 text-right text-white">
+                      {item.participationRate}%
+                    </td>
+                    <td className="py-3 px-3 text-right font-bold text-white">
+                      <span className="font-dotmatrix text-base">{item.allocatedAmount?.toLocaleString()}</span> {activeDistribution.tokenSymbol}
                     </td>
                     <td className="py-3 px-3 text-center">
-                      {alloc.eligible ? (
-                        <span className="inline-flex items-center gap-1 text-[11px] text-cr-accent bg-cr-accent/10 px-2 py-0.5 rounded border border-cr-accent/30">
-                          <CheckCircle2 className="w-3 h-3" />
-                          Eligible
+                      {item.isEligible ? (
+                        <span className="inline-flex items-center gap-1 text-[11px] text-white bg-white/10 px-2.5 py-0.5 rounded-full border border-white/30">
+                          <CheckCircle2 className="w-3 h-3 text-[#B6F36B]" />
+                          Qualified
                         </span>
                       ) : (
-                        <span
-                          className="inline-flex items-center gap-1 text-[11px] text-cr-critical bg-cr-critical/10 px-2 py-0.5 rounded border border-cr-critical/30"
-                          title={alloc.ineligibilityReason}
-                        >
+                        <span className="inline-flex items-center gap-1 text-[11px] text-[#E87979] bg-[#E87979]/10 px-2.5 py-0.5 rounded-full border border-[#E87979]/30">
                           <AlertCircle className="w-3 h-3" />
                           Ineligible
                         </span>
                       )}
-                    </td>
-                    <td className="py-3 px-3 text-right font-medium">
-                      {alloc.allocatedPercentage}%
-                    </td>
-                    <td className="py-3 px-3 text-right font-bold text-cr-accent text-sm">
-                      {alloc.allocatedAmount.toLocaleString()} NEAR
                     </td>
                   </tr>
                 ))}
@@ -227,4 +246,3 @@ export const RewardsPage: React.FC = () => {
     </div>
   );
 };
-

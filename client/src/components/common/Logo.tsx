@@ -6,40 +6,51 @@ interface LogoProps {
   showText?: boolean;
 }
 
-export const Logo: React.FC<LogoProps> = ({ className = '', size = 32, showText = true }) => {
+export const Logo: React.FC<LogoProps> = ({ className = '', size = 42, showText = true }) => {
   return (
     <div className={`flex items-center gap-3 ${className}`}>
-      {/* Turnout Brand Symbol: Signal Arc & Civic Stake Alignment */}
-      <svg
-        width={size}
-        height={size}
-        viewBox="0 0 36 36"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-        className="shrink-0 transition-transform duration-300 hover:scale-105"
+      {/* Circular white logo button matching the exact theme spec */}
+      <div
+        className="relative shrink-0 rounded-full bg-white flex items-center justify-center transition-transform duration-300 hover:scale-105 shadow-[0_4px_14px_rgba(0,0,0,0.16)]"
+        style={{ width: `${size}px`, height: `${size}px` }}
       >
-        <rect width="36" height="36" rx="8" fill="#17221C" stroke="#304238" strokeWidth="1.5" />
-        {/* Collective voting base */}
-        <circle cx="10" cy="25" r="2.2" fill="#66CDAA" />
-        <circle cx="18" cy="25" r="2.2" fill="#B6F36B" />
-        <circle cx="26" cy="25" r="2.2" fill="#66CDAA" />
-        {/* Signal & accountability antenna arc */}
-        <path
-          d="M10 20V15.5C10 11.91 13.58 9 18 9C22.42 9 26 11.91 26 15.5V20"
-          stroke="#B6F36B"
-          strokeWidth="2.2"
-          strokeLinecap="round"
+        <img
+          src="/assets/logo.webp"
+          alt=""
+          width="52"
+          height="52"
+          className="w-[72%] h-[72%] object-contain block select-none pointer-events-none"
+          onError={(e) => {
+            // Fallback if image path has issue
+            (e.target as HTMLElement).style.display = 'none';
+          }}
         />
-        <line x1="18" y1="9" x2="18" y2="18" stroke="#B6F36B" strokeWidth="2.2" strokeLinecap="round" />
-        <circle cx="18" cy="18" r="2" fill="#B6F36B" />
-      </svg>
+        {/* Crisp vector fallback symbol if image is unavailable */}
+        <svg
+          className="w-[72%] h-[72%] absolute inset-0 m-auto pointer-events-none"
+          viewBox="0 0 36 36"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M9 22V15C9 10 13 6 18 6C23 6 27 10 27 15V22"
+            stroke="#111111"
+            strokeWidth="3"
+            strokeLinecap="round"
+          />
+          <circle cx="18" cy="18" r="3" fill="#111111" />
+          <circle cx="10" cy="27" r="2.5" fill="#111111" />
+          <circle cx="18" cy="27" r="2.5" fill="#111111" />
+          <circle cx="26" cy="27" r="2.5" fill="#111111" />
+        </svg>
+      </div>
 
       {showText && (
         <div className="flex flex-col">
-          <span className="font-heading text-lg font-bold tracking-tight text-cr-text leading-tight">
-            TURNOUT<span className="text-cr-accent">.</span>
+          <span className="font-dotmatrix text-lg font-bold tracking-tight text-white leading-tight">
+            TURNOUT<span className="text-[#B6F36B]">.</span>
           </span>
-          <span className="text-[9px] uppercase tracking-widest text-cr-muted font-mono -mt-0.5">
+          <span className="text-[9px] uppercase tracking-widest text-[#8e8e8e] font-mono -mt-0.5">
             GOVERNANCE LAYER
           </span>
         </div>
@@ -47,4 +58,3 @@ export const Logo: React.FC<LogoProps> = ({ className = '', size = 32, showText 
     </div>
   );
 };
-

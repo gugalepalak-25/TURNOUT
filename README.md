@@ -361,6 +361,13 @@ All 22 unit, integration, and component tests pass cleanly:
 
 ---
 
-## 13. Disclaimer
+## 9. Hackathon Disclosure
+- **Built during** the NEAR HACKATHON window (2026-10-19 to 2026-11-14). 
+- **Libraries:** React, Vite, Lucide React, NEAR Wallet Selector, my-near-wallet, Fastify, @fastify/cors, @noble/hashes, near-sdk, Vitest, Testing Library, jsdom.
+- **Other projects by this team:** CLEARPASS.
 
-Turnout is an independent, community-driven accountability protocol designed to strengthen decentralization and transparency on NEAR Protocol. Turnout is not an official NEAR Foundation product and NEAR Foundation does not endorse, sponsor, or administer Turnout.
+---
+
+## 10. License
+
+MIT License — see [LICENSE](LICENSE). Designed and built for the NEAR Blockchain Ecosystem.

@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Menu, Wallet, CheckCircle2, ShieldAlert, Cpu, ArrowUpRight } from 'lucide-react';
+import { Menu, Wallet, CheckCircle2, ShieldAlert, Cpu, ArrowUpRight, Sparkles } from 'lucide-react';
 import { useNearWallet } from '../../context/NearWalletContext.js';
 import { MonospaceAddress } from '../common/MonospaceAddress.js';
+import { isDemoMode, setDemoMode } from '../../services/api.js';
 
 interface HeaderProps {
   onToggleMobileMenu: () => void;
@@ -19,6 +20,14 @@ export const Header: React.FC<HeaderProps> = ({ onToggleMobileMenu, blockchainSt
   const { accountId, isConnected, connect, disconnect } = useNearWallet();
   const [showWalletModal, setShowWalletModal] = useState(false);
   const [customInput, setCustomInput] = useState('');
+  const [demoActive, setDemoActive] = useState<boolean>(() => isDemoMode());
+
+  const handleToggleDemo = () => {
+    const next = !demoActive;
+    setDemoMode(next);
+    setDemoActive(next);
+    window.location.reload();
+  };
 
   const handleConnect = async (account?: string) => {
     await connect(account);
@@ -66,6 +75,26 @@ export const Header: React.FC<HeaderProps> = ({ onToggleMobileMenu, blockchainSt
 
         {/* Right Action Controls: White Pills and Dark Pills */}
         <div className="flex items-center gap-3">
+          {/* Demo Data Toggle Pill */}
+          <button
+            onClick={handleToggleDemo}
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-mono transition-all bg-[#28282a] hover:bg-[#323234] border border-white/20 shadow-[0_4px_14px_rgba(0,0,0,0.16)] hover:-translate-y-0.5 cursor-pointer"
+            title={
+              demoActive
+                ? 'Demo dataset is ACTIVE. Click to switch to live RPC.'
+                : 'Live mode active. Click to switch to verified demo values.'
+            }
+          >
+            <span
+              className={`w-2 h-2 rounded-full ${
+                demoActive ? 'bg-[#B6F36B] shadow-[0_0_8px_#B6F36B]' : 'bg-neutral-500'
+              }`}
+            />
+            <span className={demoActive ? 'text-[#B6F36B] font-semibold' : 'text-[#8e8e8e]'}>
+              {demoActive ? 'DEMO DATA' : 'LIVE RPC'}
+            </span>
+          </button>
+
           {/* Network tag in dark pill */}
           <div className="hidden sm:flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#28282a] border border-white/20 text-xs font-mono text-[#c4c2c3] shadow-[0_4px_14px_rgba(0,0,0,0.16)]">
             <Cpu className="w-3.5 h-3.5 text-[#B6F36B]" />

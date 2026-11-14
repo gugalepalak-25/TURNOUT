@@ -16,12 +16,45 @@ import {
   demoWatchlist,
 } from './demoData.js';
 
+export const isDemoMode = (): boolean => {
+  if (typeof window === 'undefined') return true;
+  try {
+    const search = new URLSearchParams(window.location.search);
+    if (search.get('demo') === 'true' || search.get('demo') === '1') {
+      localStorage.setItem('turnout_demo_mode', 'true');
+      return true;
+    }
+    if (search.get('demo') === 'false' || search.get('demo') === '0') {
+      localStorage.setItem('turnout_demo_mode', 'false');
+      return false;
+    }
+    const stored = localStorage.getItem('turnout_demo_mode');
+    if (stored !== null) {
+      return stored === 'true';
+    }
+  } catch {}
+  return true; // Default to demo mode in client for instant reliable preview
+};
+
+export const setDemoMode = (enabled: boolean): void => {
+  try {
+    if (enabled) {
+      localStorage.setItem('turnout_demo_mode', 'true');
+    } else {
+      localStorage.setItem('turnout_demo_mode', 'false');
+    }
+  } catch {}
+};
+
 const api = axios.create({
   baseURL: '/api',
   timeout: 8000,
 });
 
 export const fetchOverview = async (): Promise<GovernanceOverview> => {
+  if (isDemoMode()) {
+    return demoOverview;
+  }
   try {
     const res = await api.get('/overview');
     if (res.data && res.data.data) {
@@ -34,6 +67,9 @@ export const fetchOverview = async (): Promise<GovernanceOverview> => {
 };
 
 export const fetchDAOs = async (): Promise<DAO[]> => {
+  if (isDemoMode()) {
+    return demoDAOs;
+  }
   try {
     const res = await api.get('/daos');
     if (res.data && res.data.data) {
@@ -46,6 +82,9 @@ export const fetchDAOs = async (): Promise<DAO[]> => {
 };
 
 export const fetchDelegates = async (): Promise<Delegate[]> => {
+  if (isDemoMode()) {
+    return demoDelegates;
+  }
   try {
     const res = await api.get('/delegates');
     if (res.data && res.data.data) {
@@ -62,13 +101,15 @@ export const fetchLeaderboard = async (params?: {
   grade?: string;
   hosOnly?: boolean;
 }): Promise<Delegate[]> => {
-  try {
-    const res = await api.get('/leaderboard', { params });
-    if (res.data && res.data.data) {
-      return res.data.data;
+  if (!isDemoMode()) {
+    try {
+      const res = await api.get('/leaderboard', { params });
+      if (res.data && res.data.data) {
+        return res.data.data;
+      }
+    } catch (err) {
+      console.info('Using embedded leaderboard snapshot:', err);
     }
-  } catch (err) {
-    console.info('Using embedded leaderboard snapshot:', err);
   }
 
   let list = [...demoDelegates];
@@ -82,13 +123,15 @@ export const fetchLeaderboard = async (params?: {
 };
 
 export const fetchDelegatePassport = async (accountId: string): Promise<Delegate> => {
-  try {
-    const res = await api.get(`/delegates/${encodeURIComponent(accountId)}`);
-    if (res.data && res.data.data) {
-      return res.data.data;
+  if (!isDemoMode()) {
+    try {
+      const res = await api.get(`/delegates/${encodeURIComponent(accountId)}`);
+      if (res.data && res.data.data) {
+        return res.data.data;
+      }
+    } catch (err) {
+      console.info(`Using embedded delegate passport for ${accountId}:`, err);
     }
-  } catch (err) {
-    console.info(`Using embedded delegate passport for ${accountId}:`, err);
   }
 
   const found = demoDelegates.find(
@@ -123,13 +166,15 @@ export const fetchProposals = async (params?: {
   status?: string;
   kind?: string;
 }): Promise<Proposal[]> => {
-  try {
-    const res = await api.get('/proposals', { params });
-    if (res.data && res.data.data) {
-      return res.data.data;
+  if (!isDemoMode()) {
+    try {
+      const res = await api.get('/proposals', { params });
+      if (res.data && res.data.data) {
+        return res.data.data;
+      }
+    } catch (err) {
+      console.info('Using embedded proposals snapshot:', err);
     }
-  } catch (err) {
-    console.info('Using embedded proposals snapshot:', err);
   }
 
   let list = [...demoProposals];
@@ -143,13 +188,15 @@ export const fetchProposals = async (params?: {
 };
 
 export const fetchProposalDetail = async (id: string): Promise<Proposal> => {
-  try {
-    const res = await api.get(`/proposals/${encodeURIComponent(id)}`);
-    if (res.data && res.data.data) {
-      return res.data.data;
+  if (!isDemoMode()) {
+    try {
+      const res = await api.get(`/proposals/${encodeURIComponent(id)}`);
+      if (res.data && res.data.data) {
+        return res.data.data;
+      }
+    } catch (err) {
+      console.info(`Using embedded proposal detail for ${id}:`, err);
     }
-  } catch (err) {
-    console.info(`Using embedded proposal detail for ${id}:`, err);
   }
 
   const found = demoProposals.find(
@@ -162,13 +209,15 @@ export const fetchProposalDetail = async (id: string): Promise<Proposal> => {
 };
 
 export const fetchScorecards = async (): Promise<Scorecard[]> => {
-  try {
-    const res = await api.get('/scorecards');
-    if (res.data && res.data.data) {
-      return res.data.data;
+  if (!isDemoMode()) {
+    try {
+      const res = await api.get('/scorecards');
+      if (res.data && res.data.data) {
+        return res.data.data;
+      }
+    } catch (err) {
+      console.info('Using embedded scorecards snapshot:', err);
     }
-  } catch (err) {
-    console.info('Using embedded scorecards snapshot:', err);
   }
   return demoScorecards;
 };
@@ -278,15 +327,17 @@ export const publishScorecardOnChain = async (payload: {
 };
 
 export const fetchWatchlist = async (delegatorAccountId?: string): Promise<WatchlistEntry[]> => {
-  try {
-    const res = await api.get('/guardian/watchlist', {
-      params: { delegator: delegatorAccountId || 'governance-user.testnet' },
-    });
-    if (res.data && res.data.data) {
-      return res.data.data;
+  if (!isDemoMode()) {
+    try {
+      const res = await api.get('/guardian/watchlist', {
+        params: { delegator: delegatorAccountId || 'governance-user.testnet' },
+      });
+      if (res.data && res.data.data) {
+        return res.data.data;
+      }
+    } catch (err) {
+      console.info('Using embedded watchlist snapshot:', err);
     }
-  } catch (err) {
-    console.info('Using embedded watchlist snapshot:', err);
   }
   return demoWatchlist;
 };
@@ -342,13 +393,15 @@ export const queryAIAnalyst = async (payload: {
   proposalId?: string;
   conversationHistory?: Array<{ role: 'user' | 'assistant'; content: string }>;
 }) => {
-  try {
-    const res = await api.post('/analysis', payload, { timeout: 120000 });
-    if (res.data && res.data.data) {
-      return res.data.data;
+  if (!isDemoMode()) {
+    try {
+      const res = await api.post('/analysis', payload, { timeout: 120000 });
+      if (res.data && res.data.data) {
+        return res.data.data;
+      }
+    } catch (err) {
+      console.info('Using intelligent local analyst query fallback:', err);
     }
-  } catch (err) {
-    console.info('Using intelligent local analyst query fallback:', err);
   }
 
   const queryLower = payload.query.toLowerCase();
@@ -429,6 +482,17 @@ export const queryAIAnalyst = async (payload: {
 };
 
 export const fetchBlockchainStatus = async () => {
+  if (isDemoMode()) {
+    return {
+      network: 'testnet',
+      connected: true,
+      rpcUrl: 'https://rpc.testnet.near.org',
+      mode: 'INDEXED_SNAPSHOT',
+      lastSyncBlock: 174829103,
+      lastSyncTime: new Date().toISOString(),
+      errorMessage: null,
+    };
+  }
   try {
     const res = await api.get('/blockchain/status');
     if (res.data && res.data.data) {

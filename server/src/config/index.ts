@@ -1,7 +1,17 @@
 import dotenv from 'dotenv';
+import path from 'node:path';
 import { z } from 'zod';
 
-dotenv.config();
+const workingDirectory = process.cwd();
+const envPaths = [
+  path.resolve(workingDirectory, 'server', '.env'),
+  path.resolve(workingDirectory, '.env'),
+  path.resolve(workingDirectory, '..', '.env'),
+];
+
+for (const envPath of new Set(envPaths)) {
+  dotenv.config({ path: envPath });
+}
 
 const envSchema = z.object({
   PORT: z.coerce.number().default(8787),
@@ -27,9 +37,10 @@ const envSchema = z.object({
   // Forum API
   DISCOURSE_BASE_URL: z.string().default('https://gov.near.org'),
 
-  // AI Configuration
-  OPENAI_API_KEY: z.string().optional(),
-  OPENAI_MODEL: z.string().default('gpt-4o-mini'),
+  // OpenAI-compatible AI provider
+  AI_API_KEY: z.string().optional(),
+  AI_BASE_URL: z.string().url().default('https://cloud-api.near.ai/v1'),
+  AI_MODEL: z.string().default('z-ai/glm-5.3-flash'),
 });
 
 const parsedEnv = envSchema.safeParse(process.env);
@@ -39,4 +50,3 @@ if (!parsedEnv.success) {
 }
 
 export const config = parsedEnv.success ? parsedEnv.data : envSchema.parse({});
-

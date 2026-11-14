@@ -229,6 +229,16 @@ npm run db:generate
 npm run dev
 ```
 
+To enable model-backed governance analysis, set `AI_API_KEY` in `server/.env`. The default provider settings use NEAR AI's OpenAI-compatible API:
+
+```env
+AI_API_KEY=your-near-ai-api-key
+AI_BASE_URL=https://cloud-api.near.ai/v1
+AI_MODEL=z-ai/glm-5.3-flash
+```
+
+Without `AI_API_KEY`, the analyst uses its deterministic local response engine. If a configured provider call fails, the analysis endpoint returns an error instead of silently substituting a local response.
+
 The application will be accessible at:
 - **Frontend Control Room:** `http://localhost:5173`
 - **Backend REST API:** `http://localhost:8787`
@@ -305,4 +315,3 @@ All 22 unit, integration, and component tests pass cleanly:
 ## 11. Disclaimer
 
 Turnout is an independent, community-driven accountability protocol designed to strengthen decentralization and transparency on NEAR Protocol. Turnout is not an official NEAR Foundation product and NEAR Foundation does not endorse, sponsor, or administer Turnout.
-

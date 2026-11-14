@@ -4,14 +4,15 @@ import { AIAnalysisRequest, AIAnalysisResponse } from './types.js';
 import { IStorageEngine } from '../db/types.js';
 
 export class GovernanceAnalystService {
-  private openai: OpenAI | null = null;
+  private client: OpenAI | null = null;
   private model: string;
 
   constructor() {
-    this.model = config.OPENAI_MODEL;
-    if (config.OPENAI_API_KEY) {
-      this.openai = new OpenAI({
-        apiKey: config.OPENAI_API_KEY,
+    this.model = config.AI_MODEL;
+    if (config.AI_API_KEY) {
+      this.client = new OpenAI({
+        apiKey: config.AI_API_KEY,
+        baseURL: config.AI_BASE_URL,
       });
     }
   }
@@ -20,13 +21,9 @@ export class GovernanceAnalystService {
     // 1. Gather real grounded context from storage
     const context = await this.buildGroundedContext(request, storage);
 
-    // 2. If OpenAI API key is configured, invoke model
-    if (this.openai && config.OPENAI_API_KEY) {
-      try {
-        return await this.callOpenAI(request, context);
-      } catch (err) {
-        console.warn('OpenAI API call failed, falling back to local grounded analyst:', err);
-      }
+    // 2. If an AI provider is configured, invoke it; don't disguise provider failures as AI output.
+    if (this.client) {
+      return await this.callAIProvider(request, context);
     }
 
     // 3. Deterministic grounded response engine (never invents facts)
@@ -81,7 +78,7 @@ export class GovernanceAnalystService {
     return context;
   }
 
-  private async callOpenAI(request: AIAnalysisRequest, context: any): Promise<AIAnalysisResponse> {
+  private async callAIProvider(request: AIAnalysisRequest, context: any): Promise<AIAnalysisResponse> {
     const systemPrompt = `You are the TURNOUT AI Governance Analyst, an expert research system for NEAR Protocol and House of Stake decentralized governance.
 Your role is to provide rigorous, evidence-based answers.
 CRITICAL RULES:
@@ -103,7 +100,7 @@ CRITICAL RULES:
 GROUNDED CONTEXT DATA:
 ${JSON.stringify(context, null, 2)}`;
 
-    const response = await this.openai!.chat.completions.create({
+    const response = await this.client!.chat.completions.create({
       model: this.model,
       messages: [
         { role: 'system', content: systemPrompt },
@@ -217,7 +214,7 @@ ${JSON.stringify(context, null, 2)}`;
       ],
       confidenceLevel: 'High',
       limitations: [
-        'Deterministic analysis mode active. Connect OpenAI API key for conversational synthesis.',
+        'Deterministic analysis mode active. Set AI_API_KEY to enable the configured AI provider.',
       ],
       generatedByModel: 'Turnout Grounded Governance Engine (Offline Deterministic)',
       timestamp: new Date().toISOString(),
@@ -226,4 +223,3 @@ ${JSON.stringify(context, null, 2)}`;
 }
 
 export const governanceAnalystService = new GovernanceAnalystService();
-

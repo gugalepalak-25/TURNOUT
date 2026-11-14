@@ -20,6 +20,9 @@ async function startServer() {
   console.log(`📜 House of Stake Voting Contract: ${config.HOUSE_OF_STAKE_VOTING_CONTRACT}`);
   console.log(`🔒 veNEAR Contract: ${config.HOUSE_OF_STAKE_VENEAR_CONTRACT}`);
   console.log(`🛡️ Scorecard Registry: ${config.TURNOUT_SCORECARD_CONTRACT}`);
+  console.log(
+    `🤖 AI Governance Analyst: ${config.AI_API_KEY ? `${config.AI_MODEL} configured` : 'Offline deterministic mode'}`
+  );
 
   const port = config.PORT;
   app.listen(port, '0.0.0.0', () => {
@@ -33,4 +36,3 @@ startServer().catch((err) => {
   console.error('Fatal startup error:', err);
   process.exit(1);
 });
-

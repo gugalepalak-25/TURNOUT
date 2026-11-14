@@ -126,7 +126,7 @@ export const queryAIAnalyst = async (payload: {
   proposalId?: string;
   conversationHistory?: Array<{ role: 'user' | 'assistant'; content: string }>;
 }) => {
-  const res = await api.post('/analysis', payload);
+  const res = await api.post('/analysis', payload, { timeout: 120000 });
   return res.data.data;
 };
 
@@ -134,4 +134,3 @@ export const fetchBlockchainStatus = async () => {
   const res = await api.get('/blockchain/status');
   return res.data.data;
 };
-

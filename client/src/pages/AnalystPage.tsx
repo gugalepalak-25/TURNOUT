@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import { Bot, Send, Sparkles, ExternalLink, ShieldAlert, RefreshCw } from 'lucide-react';
 import { queryAIAnalyst } from '../services/api.js';
 import { TerminalBox } from '../components/common/TerminalBox.js';
@@ -50,12 +51,19 @@ export const AnalystPage: React.FC = () => {
       };
 
       setMessages((prev) => [...prev, assistantMessage]);
-    } catch {
+    } catch (error) {
+      const responseError = axios.isAxiosError(error) ? error.response?.data?.error : undefined;
+      const message = typeof responseError === 'string'
+        ? responseError
+        : axios.isAxiosError(error) && error.code === 'ECONNABORTED'
+          ? 'The analysis request timed out. Please try again.'
+          : 'Unable to reach the Turnout API. Check that the backend is running.';
+
       setMessages((prev) => [
         ...prev,
         {
           role: 'assistant',
-          content: 'Unable to complete governance query. Please verify that the Turnout backend is running.',
+          content: `Unable to complete governance query: ${message}`,
         },
       ]);
     } finally {

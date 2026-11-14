@@ -13,7 +13,6 @@ import { DelegatePassportPage } from './pages/DelegatePassportPage.js';
 import { ProposalsPage } from './pages/ProposalsPage.js';
 import { ProposalDetailPage } from './pages/ProposalDetailPage.js';
 import { AnalystPage } from './pages/AnalystPage.js';
-import { RewardsPage } from './pages/RewardsPage.js';
 import { GuardianPage } from './pages/GuardianPage.js';
 import { ScorecardsPage } from './pages/ScorecardsPage.js';
 import { SettingsPage } from './pages/SettingsPage.js';
@@ -47,7 +46,6 @@ export const App: React.FC = () => {
               <Route path="proposals" element={<ProposalsPage />} />
               <Route path="proposals/:id" element={<ProposalDetailPage />} />
               <Route path="analyst" element={<AnalystPage />} />
-              <Route path="rewards" element={<RewardsPage />} />
               <Route path="guardian" element={<GuardianPage />} />
               <Route path="scorecards" element={<ScorecardsPage />} />
               <Route path="settings" element={<SettingsPage />} />
@@ -63,7 +61,6 @@ export const App: React.FC = () => {
               <Route path="/proposals" element={<ProposalsPage />} />
               <Route path="/proposals/:id" element={<ProposalDetailPage />} />
               <Route path="/analyst" element={<AnalystPage />} />
-              <Route path="/rewards" element={<RewardsPage />} />
               <Route path="/guardian" element={<GuardianPage />} />
               <Route path="/scorecards" element={<ScorecardsPage />} />
               <Route path="/settings" element={<SettingsPage />} />

@@ -23,3 +23,4 @@ module.exports = (req, res) => {
   req.url = targetUrl;
   return app(req, res);
 };
+

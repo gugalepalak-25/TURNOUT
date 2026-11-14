@@ -186,8 +186,6 @@ export const LandingPage: React.FC = () => {
           <span className="landing-arrow-div">→</span>
           <span className="landing-stage-pill">VERIFY</span>
           <span className="landing-arrow-div">→</span>
-          <span className="landing-stage-pill">REWARD</span>
-          <span className="landing-arrow-div">→</span>
           <span className="landing-stage-pill">PROTECT</span>
         </div>
 
